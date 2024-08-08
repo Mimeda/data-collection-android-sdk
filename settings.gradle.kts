@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MlinkMobileSDKAndroid"
 include(":app")
- 
+include(":mlinkmobile")
