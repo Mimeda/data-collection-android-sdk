@@ -2,11 +2,14 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.detekt)
+    id("kotlin-parcelize")
 }
 
 android {
     namespace = "com.mimeda.mlinkmobile"
     compileSdk = 34
+
+    android.buildFeatures.buildConfig = true
 
     defaultConfig {
         minSdk = 23
@@ -18,7 +21,7 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "stage")
+            buildConfigField("String", "BASE_URL", "debug")
         }
         release {
             isMinifyEnabled = false
@@ -45,8 +48,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
+    implementation(libs.fuel)
+    implementation(libs.gson)
 }
 
 detekt {
