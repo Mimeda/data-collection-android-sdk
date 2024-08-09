@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -37,4 +38,14 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+}
+
+detekt {
+    autoCorrect = true
+    buildUponDefaultConfig = true
+    config = rootProject.files("$rootDir/config/detekt/detekt.yml")
+    baseline = file("detekt-baseline.xml")
 }
