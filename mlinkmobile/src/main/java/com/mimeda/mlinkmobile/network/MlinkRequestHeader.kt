@@ -1,5 +1,5 @@
 package com.mimeda.mlinkmobile.network
 
-internal data class RequestHeader(
+data class MlinkRequestHeader(
     val headerMap: Map<String, String>
 )

@@ -1,10 +1,11 @@
 package com.mimeda.mlinkmobile.common
 
-internal object Constants {
+internal object MlinkConstants {
 
     object Endpoint {
         const val INIT = "init"
         const val SAMPLE = "sample"
+        const val BOOKS = "all_books"
     }
 
     object HeaderKey {

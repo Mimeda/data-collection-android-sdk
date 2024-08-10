@@ -6,57 +6,55 @@ import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.JsonSyntaxException
-import com.mimeda.mlinkmobile.Logger
-import com.mimeda.mlinkmobile.common.Resource
+import com.mimeda.mlinkmobile.MlinkLogger
+import com.mimeda.mlinkmobile.common.MlinkResource
 import com.mimeda.mlinkmobile.common.withBaseUrl
-import com.mimeda.mlinkmobile.di.UtilModule
+import com.mimeda.mlinkmobile.di.MlinkUtilModule
 import com.mimeda.mlinkmobile.network.MlinkError
-import com.mimeda.mlinkmobile.network.RequestHeader
-import com.mimeda.mlinkmobile.network.model.BaseRequest
-import com.mimeda.mlinkmobile.network.model.BaseResponse
+import com.mimeda.mlinkmobile.network.MlinkRequestHeader
+import com.mimeda.mlinkmobile.network.model.MlinkBaseRequest
+import com.mimeda.mlinkmobile.network.model.MlinkBaseResponse
 import kotlinx.coroutines.withContext
 
-internal class CustomFuelClient : ApiClient() {
+internal class MlinkFuelClient : MlinkApiClient() {
 
     override suspend fun <R : Any> post(
-        request: BaseRequest,
+        request: MlinkBaseRequest,
         endPoint: String,
         responseClass: Class<R>,
-        header: RequestHeader
-    ): Resource<R> = withContext(networkScope.coroutineContext) {
+        header: MlinkRequestHeader
+    ): MlinkResource<R> = withContext(networkScope.coroutineContext) {
         sendPostRequest(request, endPoint.withBaseUrl(), responseClass, header)
     }
 
     override suspend fun <R : Any> get(
         endPoint: String,
         responseClass: Class<R>,
-    ): Resource<R> = withContext(networkScope.coroutineContext) {
+    ): MlinkResource<R> = withContext(networkScope.coroutineContext) {
         sendGetRequest(endPoint.withBaseUrl(), responseClass)
     }
 
     private fun <R : Any> sendGetRequest(
         url: String,
         responseClass: Class<R>,
-    ): Resource<R> = try {
+    ): MlinkResource<R> = try {
         makeRequest(url.httpGet(), responseClass)
     } catch (e: Exception) {
-        Resource.Error(MlinkError.UnexpectedException(e.message))
+        MlinkResource.Error(MlinkError.UnexpectedException(e.message))
     }
 
     private fun <R : Any> sendPostRequest(
-        request: BaseRequest,
+        request: MlinkBaseRequest,
         url: String,
         responseClass: Class<R>,
-        header: RequestHeader
-    ): Resource<R> {
+        header: MlinkRequestHeader
+    ): MlinkResource<R> {
         return try {
-            val requestAsJson = UtilModule.jsonParser.toJson(request)
+            val requestAsJson = MlinkUtilModule.jsonParser.toJson(request)
             val apiPostBodyJson = encryptRequest(request)
-            Logger.printNetworkRequest(url, requestAsJson, header)
+            MlinkLogger.printNetworkRequest(url, requestAsJson, header)
             makeRequest(
-                url.httpPost()
-                    .header(updateHeader(header))
-                    .jsonBody(apiPostBodyJson),
+                url.httpPost().header(updateHeader(header)).jsonBody(apiPostBodyJson),
                 responseClass
             )
         } catch (e: Exception) {
@@ -64,31 +62,31 @@ internal class CustomFuelClient : ApiClient() {
                 is JsonSyntaxException -> MlinkError.NotFoundNetworkException()
                 else -> MlinkError.UnexpectedException(e.localizedMessage)
             }
-            Resource.Error(exception)
+            MlinkResource.Error(exception)
         }
     }
 
-    private fun <R : Any> makeRequest(request: Request, responseClass: Class<R>): Resource<R> {
+    private fun <R : Any> makeRequest(request: Request, responseClass: Class<R>): MlinkResource<R> {
         val response = request.response().second
         val jsonResponse = request.response().second.body().asString("application/json")
-        val model = UtilModule.jsonParser.fromJson(jsonResponse, responseClass)
+        val model = MlinkUtilModule.jsonParser.fromJson(jsonResponse, responseClass)
         return if (response.isSuccessful) {
             if (model == null) {
-                Logger.printNetworkResponse(false, "Error: ", "Response is Null")
-                Resource.Error(MlinkError.ParseException())
+                MlinkLogger.printNetworkResponse(false, "Error", "Response is Null")
+                MlinkResource.Error(MlinkError.ParseException())
             } else {
-                Logger.printNetworkResponse(true, "Success", jsonResponse)
-                Resource.Success(model)
+                MlinkLogger.printNetworkResponse(true, "Success", jsonResponse)
+                MlinkResource.Success(model)
             }
         } else {
-            val error = errorHandler.getError(model as? BaseResponse<*>)
-            Logger.printNetworkResponse(false, "Success", "${error.message} and response $jsonResponse")
-            Resource.Error(error)
+            val error = mlinkErrorHandler.getError(model as? MlinkBaseResponse<*>)
+            MlinkLogger.printNetworkResponse(false, "Error", "${error.message} and response $jsonResponse")
+            MlinkResource.Error(error)
         }
     }
 
     private fun updateHeader(
-        header: RequestHeader? = null,
+        header: MlinkRequestHeader? = null,
     ): Map<String, String> {
         if (header == null) return mapOf()
         val updatedHeader = mutableMapOf<String, String>()

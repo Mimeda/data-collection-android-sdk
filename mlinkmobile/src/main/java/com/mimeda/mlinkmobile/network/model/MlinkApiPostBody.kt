@@ -2,7 +2,7 @@ package com.mimeda.mlinkmobile.network.model
 
 import com.google.gson.annotations.SerializedName
 
-internal data class ApiPostBody(
+internal data class MlinkApiPostBody(
     @SerializedName("data")
     val data: String
 )

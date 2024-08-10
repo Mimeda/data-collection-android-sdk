@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 @Keep
-internal data class Meta(
+data class MlinkMeta(
 
     @Keep
     @SerializedName("requestId")

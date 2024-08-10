@@ -1,9 +1,9 @@
 package com.mimeda.mlinkmobile
 
 import android.util.Log
-import com.mimeda.mlinkmobile.network.RequestHeader
+import com.mimeda.mlinkmobile.network.MlinkRequestHeader
 
-internal object Logger {
+internal object MlinkLogger {
 
     var isEnabled = false
 
@@ -29,9 +29,9 @@ internal object Logger {
         if (isEnabled && message != null) Log.v(TAG, message)
     }
 
-    fun printNetworkRequest(url: String, request: String, header: RequestHeader) {
+    fun printNetworkRequest(url: String, request: String, header: MlinkRequestHeader) {
         if (BuildConfig.DEBUG) {
-            verbose("URL:\n$url\nHEADER:\n$header\nBODY:\n$request")
+            verbose("URL:$url\nHEADER:$header\nBODY:$request")
         }
     }
 

@@ -21,12 +21,12 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "debug")
+            buildConfigField("String", "BASE_URL", "\"https://api.canerture.com/books/\"")
             buildConfigField("String","VERSION_NAME","\"${defaultConfig.versionName}\"")
         }
         release {
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "prod")
+            buildConfigField("String", "BASE_URL", "\"prod\"")
             buildConfigField("String","VERSION_NAME","\"${defaultConfig.versionName}\"")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }

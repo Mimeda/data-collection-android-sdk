@@ -4,13 +4,13 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 @Keep
-internal open class BaseResponse<T : BaseResult> {
+open class MlinkBaseResponse<T : MlinkBaseResult> {
 
     @Keep
     @SerializedName("result")
     lateinit var result: T
 
     @Keep
-    @SerializedName("meta")
-    val meta: Meta? = null
+    @SerializedName("mlinkMeta")
+    val mlinkMeta: MlinkMeta? = null
 }

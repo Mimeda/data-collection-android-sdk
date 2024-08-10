@@ -13,10 +13,11 @@ object MlinkManager {
         context: Context,
         isLogEnabled: Boolean = true,
     ) {
-        Logger.isEnabled = isLogEnabled
+        MlinkLogger.isEnabled = isLogEnabled
         context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA).apply {
             key = metaData.getString("com.mimeda.mlinkmobile.key")
         }
+        MlinkLogger.info("MlinkManager initialized successfully.")
     }
 
     fun getKey(): String? = key
