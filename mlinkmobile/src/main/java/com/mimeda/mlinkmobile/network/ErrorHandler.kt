@@ -1,5 +1,7 @@
 package com.mimeda.mlinkmobile.network
 
+import com.mimeda.mlinkmobile.network.model.BaseResponse
+
 internal class ErrorHandler {
     fun getError(response: BaseResponse<*>?): MlinkError {
         response?.meta?.let { meta ->

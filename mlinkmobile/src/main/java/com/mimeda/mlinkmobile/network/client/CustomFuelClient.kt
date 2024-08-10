@@ -1,4 +1,4 @@
-package com.mimeda.mlinkmobile.network
+package com.mimeda.mlinkmobile.network.client
 
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.extensions.jsonBody
@@ -7,25 +7,31 @@ import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.JsonSyntaxException
 import com.mimeda.mlinkmobile.Logger
+import com.mimeda.mlinkmobile.common.Resource
 import com.mimeda.mlinkmobile.common.withBaseUrl
+import com.mimeda.mlinkmobile.di.UtilModule
+import com.mimeda.mlinkmobile.network.MlinkError
+import com.mimeda.mlinkmobile.network.RequestHeader
+import com.mimeda.mlinkmobile.network.model.BaseRequest
+import com.mimeda.mlinkmobile.network.model.BaseResponse
 import kotlinx.coroutines.withContext
 
 internal class CustomFuelClient : ApiClient() {
 
     override suspend fun <R : Any> post(
         request: BaseRequest,
-        endPoint: Endpoint,
+        endPoint: String,
         responseClass: Class<R>,
         header: RequestHeader
     ): Resource<R> = withContext(networkScope.coroutineContext) {
-        sendPostRequest(request, endPoint.path.withBaseUrl(), responseClass, header)
+        sendPostRequest(request, endPoint.withBaseUrl(), responseClass, header)
     }
 
     override suspend fun <R : Any> get(
-        endPoint: Endpoint,
+        endPoint: String,
         responseClass: Class<R>,
     ): Resource<R> = withContext(networkScope.coroutineContext) {
-        sendGetRequest(endPoint.path.withBaseUrl(), responseClass)
+        sendGetRequest(endPoint.withBaseUrl(), responseClass)
     }
 
     private fun <R : Any> sendGetRequest(
@@ -87,7 +93,7 @@ internal class CustomFuelClient : ApiClient() {
         if (header == null) return mapOf()
         val updatedHeader = mutableMapOf<String, String>()
         header.headerMap.forEach {
-            updatedHeader[it.key.key] = it.value
+            updatedHeader[it.key] = it.value
         }
         return updatedHeader
     }

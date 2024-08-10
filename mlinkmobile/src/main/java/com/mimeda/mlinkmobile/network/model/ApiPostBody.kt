@@ -1,4 +1,4 @@
-package com.mimeda.mlinkmobile.network
+package com.mimeda.mlinkmobile.network.model
 
 import com.google.gson.annotations.SerializedName
 

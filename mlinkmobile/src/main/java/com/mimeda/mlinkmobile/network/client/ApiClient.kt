@@ -1,5 +1,11 @@
-package com.mimeda.mlinkmobile.network
+package com.mimeda.mlinkmobile.network.client
 
+import com.mimeda.mlinkmobile.common.Resource
+import com.mimeda.mlinkmobile.di.UtilModule
+import com.mimeda.mlinkmobile.network.ErrorHandler
+import com.mimeda.mlinkmobile.network.RequestHeader
+import com.mimeda.mlinkmobile.network.model.ApiPostBody
+import com.mimeda.mlinkmobile.network.model.BaseRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
@@ -9,12 +15,12 @@ internal abstract class ApiClient {
 
     abstract suspend fun <R : Any> post(
         request: BaseRequest,
-        endPoint: Endpoint,
+        endPoint: String,
         responseClass: Class<R>,
         header: RequestHeader
     ): Resource<R>
 
-    abstract suspend fun <R : Any> get(endPoint: Endpoint, responseClass: Class<R>): Resource<R>
+    abstract suspend fun <R : Any> get(endPoint: String, responseClass: Class<R>): Resource<R>
 
     protected fun encryptRequest(request: BaseRequest): String {
         val jsonEncrypted = UtilModule.jsonParser.toJson(request)
