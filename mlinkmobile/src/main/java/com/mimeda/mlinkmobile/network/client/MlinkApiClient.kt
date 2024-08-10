@@ -3,7 +3,7 @@ package com.mimeda.mlinkmobile.network.client
 import com.mimeda.mlinkmobile.common.MlinkResource
 import com.mimeda.mlinkmobile.di.MlinkUtilModule
 import com.mimeda.mlinkmobile.network.MlinkErrorHandler
-import com.mimeda.mlinkmobile.network.MlinkRequestHeader
+import com.mimeda.mlinkmobile.network.model.MlinkRequestHeader
 import com.mimeda.mlinkmobile.network.model.MlinkApiPostBody
 import com.mimeda.mlinkmobile.network.model.MlinkBaseRequest
 import kotlinx.coroutines.CoroutineScope

@@ -11,9 +11,9 @@ import com.mimeda.mlinkmobile.common.MlinkResource
 import com.mimeda.mlinkmobile.common.withBaseUrl
 import com.mimeda.mlinkmobile.di.MlinkUtilModule
 import com.mimeda.mlinkmobile.network.MlinkError
-import com.mimeda.mlinkmobile.network.MlinkRequestHeader
 import com.mimeda.mlinkmobile.network.model.MlinkBaseRequest
 import com.mimeda.mlinkmobile.network.model.MlinkBaseResponse
+import com.mimeda.mlinkmobile.network.model.MlinkRequestHeader
 import kotlinx.coroutines.withContext
 
 internal class MlinkFuelClient : MlinkApiClient() {
@@ -59,8 +59,23 @@ internal class MlinkFuelClient : MlinkApiClient() {
             )
         } catch (e: Exception) {
             val exception = when (e) {
-                is JsonSyntaxException -> MlinkError.NotFoundNetworkException()
-                else -> MlinkError.UnexpectedException(e.localizedMessage)
+                is JsonSyntaxException -> {
+                    MlinkLogger.printNetworkResponse(
+                        false,
+                        "Error",
+                        MlinkError.NotFoundNetworkException().message.orEmpty()
+                    )
+                    MlinkError.NotFoundNetworkException()
+                }
+
+                else -> {
+                    MlinkLogger.printNetworkResponse(
+                        false,
+                        "Error",
+                        MlinkError.UnexpectedException(e.localizedMessage).message.orEmpty()
+                    )
+                    MlinkError.UnexpectedException(e.localizedMessage)
+                }
             }
             MlinkResource.Error(exception)
         }

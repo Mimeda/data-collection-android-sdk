@@ -1,7 +1,7 @@
 package com.mimeda.mlinkmobile
 
 import android.util.Log
-import com.mimeda.mlinkmobile.network.MlinkRequestHeader
+import com.mimeda.mlinkmobile.network.model.MlinkRequestHeader
 
 internal object MlinkLogger {
 
@@ -36,17 +36,19 @@ internal object MlinkLogger {
     }
 
     fun printNetworkResponse(isSuccessful: Boolean, state: String, response: String) {
-        if (BuildConfig.DEBUG) {
-            if (isSuccessful) {
-                debug("$state:\n$response")
+        if (isEnabled) {
+            if (BuildConfig.DEBUG) {
+                if (isSuccessful) {
+                    debug("$state: $response")
+                } else {
+                    error("$state: $response")
+                }
             } else {
-                error("$state:\n$response")
-            }
-        } else {
-            if (isSuccessful) {
-                debug(state)
-            } else {
-                error(state)
+                if (isSuccessful) {
+                    debug(state)
+                } else {
+                    error(state)
+                }
             }
         }
     }
