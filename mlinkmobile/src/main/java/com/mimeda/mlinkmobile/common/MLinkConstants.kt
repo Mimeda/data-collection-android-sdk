@@ -1,6 +1,6 @@
 package com.mimeda.mlinkmobile.common
 
-internal object MlinkConstants {
+internal object MLinkConstants {
 
     object Endpoint {
         const val INIT = "init"

@@ -20,9 +20,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             MlinkMobileSDKAndroidTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-                    MlinkManager.init(this, true)
-
                     val navHostController = rememberNavController()
                     ProductAppNavigation(navHostController)
                 }

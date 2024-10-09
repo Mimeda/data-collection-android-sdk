@@ -28,8 +28,10 @@
         </activity>
 
         <meta-data
-            android:name="com.verifykit.sdk.clientKey"
-            android:value="@string/key" />
+            android:name="com.mlinkmobile.sdk.basedomain"
+            android:value="@string/baseDomain" />
+        <meta-data
+            android:name="com.mlinkmobile.sdk.appid"
+            android:value="@string/appId" />
     </application>
-
 </manifest>

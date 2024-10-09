@@ -65,7 +65,9 @@ fun ProductDetailScreenPreview() {
             product = Product(
                 id = 1,
                 name = "Product Name",
-                price = 100.0,
+                price = 9.99,
+                barcode = 123456789,
+                quantity = 1,
                 description = "Product Description",
             )
         ),

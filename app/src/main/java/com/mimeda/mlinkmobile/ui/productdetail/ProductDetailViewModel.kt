@@ -3,9 +3,11 @@ package com.mimeda.mlinkmobile.ui.productdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mimeda.mlinkmobile.MLink
 import com.mimeda.mlinkmobile.data.MockData
+import com.mimeda.mlinkmobile.data.model.Payload
+import com.mimeda.mlinkmobile.data.model.PayloadProduct
 import com.mimeda.mlinkmobile.data.model.Product
-import com.mimeda.mlinkmobile.network.MlinkEvent
 import com.mimeda.mlinkmobile.ui.productdetail.ProductDetailContract.UiAction
 import com.mimeda.mlinkmobile.ui.productdetail.ProductDetailContract.UiEffect
 import com.mimeda.mlinkmobile.ui.productdetail.ProductDetailContract.UiState
@@ -22,7 +24,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailViewModel @Inject constructor(
-    private val mlinkEvent: MlinkEvent,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -45,8 +46,16 @@ class ProductDetailViewModel @Inject constructor(
     private fun getProductDetail(productId: Int) = viewModelScope.launch {
         _uiState.update { it.copy(isLoading = true) }
         // Your service call here
-        _uiState.update { it.copy(isLoading = false, product = MockData.products.find { it.id == productId }) }
-        mlinkEvent.sendSampleEvent(productId)
+        val product = MockData.products.find { it.id == productId }
+        _uiState.update { it.copy(isLoading = false, product = product) }
+        val mappedProduct = listOf(product).map {
+            PayloadProduct(
+                barcode = it?.barcode ?: 0,
+                quantity = it?.quantity ?: 0,
+                price = it?.price ?: 0.0,
+            )
+        }
+        MLink.Publisher.Events.ProductDetails.view(Payload(1, listOf(product?.barcode ?: 0), mappedProduct))
     }
 }
 

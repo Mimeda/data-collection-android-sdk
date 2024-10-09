@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
-    //alias(libs.plugins.detekt)
+    id("kotlin-kapt")
 }
 
 android {
@@ -34,11 +34,13 @@ android {
     productFlavors {
         create("dev") {
             dimension = "environment"
-            resValue("string", "key", "123456")
+            resValue("string", "baseDomain", "123456")
+            resValue("string", "appId", "123456")
         }
         create("prod") {
             dimension = "environment"
-            resValue("string", "key", "123456")
+            resValue("string", "baseDomain", "123456")
+            resValue("string", "appId", "123456")
         }
     }
 
@@ -51,9 +53,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {

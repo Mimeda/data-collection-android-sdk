@@ -2,7 +2,10 @@ package com.mimeda.mlinkmobile.ui.productlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mimeda.mlinkmobile.MLink
 import com.mimeda.mlinkmobile.data.MockData
+import com.mimeda.mlinkmobile.data.model.Payload
+import com.mimeda.mlinkmobile.data.model.PayloadProduct
 import com.mimeda.mlinkmobile.data.model.Product
 import com.mimeda.mlinkmobile.ui.productlist.ProductListContract.UiAction
 import com.mimeda.mlinkmobile.ui.productlist.ProductListContract.UiEffect
@@ -28,11 +31,7 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
     val uiEffect: Flow<UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
     init {
-        _uiState.update {
-            it.copy(
-                products = MockData.products
-            )
-        }
+        getProducts()
     }
 
     fun onAction(uiAction: UiAction) = viewModelScope.launch {
@@ -41,6 +40,26 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
                 _uiEffect.send(UiEffect.GoToProductDetail(uiAction.productId))
             }
         }
+    }
+
+    private fun getProducts() = viewModelScope.launch {
+        _uiState.update { it.copy(isLoading = true) }
+        // Your service call here
+        _uiState.update { it.copy(isLoading = false, products = MockData.products) }
+        val mLinkProducts = MockData.products.map {
+            PayloadProduct(
+                barcode = it.barcode,
+                quantity = it.quantity,
+                price = it.price,
+            )
+        }
+        MLink.Publisher.Events.Listing.view(
+            Payload(
+                userId = 1,
+                lineItems = MockData.products.map { it.id },
+                products = mLinkProducts
+            )
+        )
     }
 }
 
