@@ -4,9 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mimeda.mlinkmobile.MLink
 import com.mimeda.mlinkmobile.data.MockData
+import com.mimeda.mlinkmobile.data.model.MlinkEventProduct
 import com.mimeda.mlinkmobile.data.model.Payload
-import com.mimeda.mlinkmobile.data.model.PayloadProduct
 import com.mimeda.mlinkmobile.data.model.Product
+import com.mimeda.mlinkmobile.data.repository.MLinkEvents
 import com.mimeda.mlinkmobile.ui.productlist.ProductListContract.UiAction
 import com.mimeda.mlinkmobile.ui.productlist.ProductListContract.UiEffect
 import com.mimeda.mlinkmobile.ui.productlist.ProductListContract.UiState
@@ -47,13 +48,13 @@ class ProductListViewModel @Inject constructor() : ViewModel() {
         // Your service call here
         _uiState.update { it.copy(isLoading = false, products = MockData.products) }
         val mLinkProducts = MockData.products.map {
-            PayloadProduct(
+            MlinkEventProduct(
                 barcode = it.barcode,
                 quantity = it.quantity,
                 price = it.price,
             )
         }
-        MLink.Publisher.Events.Listing.view(
+        MLinkEvents.listingView(
             Payload(
                 userId = 1,
                 lineItems = MockData.products.map { it.id },

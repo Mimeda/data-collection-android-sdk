@@ -2,6 +2,9 @@ package com.mimeda.mlinkmobile.common
 
 internal object MLinkConstants {
 
+    var appId: Int? = null
+    var publisher: String? = null
+
     object Endpoint {
         const val INIT = "init"
         const val SAMPLE = "sample"

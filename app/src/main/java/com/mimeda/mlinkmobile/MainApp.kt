@@ -8,8 +8,9 @@ class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
         MLink.init(
-            context = this,
-            isLogEnabled = true
+            appId = 1,
+            publisher = "Mimeda",
+            isLogEnabled = true,
         )
     }
 }

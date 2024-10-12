@@ -21,12 +21,12 @@ android {
         debug {
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", "\"https://collector.avvamobiledemo.com/im.gif?\"")
-            buildConfigField("String","VERSION_NAME","\"${defaultConfig.versionName}\"")
+            buildConfigField("String","VERSION_NAME","\"1.0.0\"")
         }
         release {
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", "\"prod\"")
-            buildConfigField("String","VERSION_NAME","\"${defaultConfig.versionName}\"")
+            buildConfigField("String","VERSION_NAME","\"1.0.0\"")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -54,8 +54,9 @@ dependencies {
 }
 
 detekt {
+    config.setFrom(file("$rootDir/config/detekt/detekt.yml"))
+    source.from(files("src/main/kotlin", "src/test/kotlin"))
+    parallel = true
     autoCorrect = true
     buildUponDefaultConfig = true
-    config = rootProject.files("$rootDir/config/detekt/detekt.yml")
-    baseline = file("detekt-baseline.xml")
 }
