@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.detekt)
-    id("kotlin-parcelize")
+    id("maven-publish")
 }
 
 android {
@@ -25,7 +25,7 @@ android {
         }
         release {
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "\"prod\"")
+            buildConfigField("String", "BASE_URL", "\"https://collector.avvamobiledemo.com/im.gif?\"")
             buildConfigField("String","VERSION_NAME","\"1.0.0\"")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
@@ -55,8 +55,23 @@ dependencies {
 
 detekt {
     config.setFrom(file("$rootDir/config/detekt/detekt.yml"))
-    source.from(files("src/main/kotlin", "src/test/kotlin"))
     parallel = true
     autoCorrect = true
     buildUponDefaultConfig = true
+}
+
+afterEvaluate {
+    android.libraryVariants.forEach {
+        publishing {
+            publications {
+                register<MavenPublication>(it.name) {
+                    from(components.findByName(it.name))
+
+                    groupId = "com.mimeda.mlinkmobile"
+                    artifactId = "mlinkmobile"
+                    version = "1.0.0"
+                }
+            }
+        }
+    }
 }

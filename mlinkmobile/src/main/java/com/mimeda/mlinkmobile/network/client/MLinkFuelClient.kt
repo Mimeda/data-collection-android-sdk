@@ -22,9 +22,9 @@ internal class MLinkFuelClient : MLinkApiClient() {
     private fun makeRequest(request: Request, eventName: String) {
         val response = request.response().second
         if (response.isSuccessful) {
-            MLinkLogger.debug("${response.statusCode} - $eventName")
+            MLinkLogger.debug("Success - $eventName")
         } else {
-            MLinkLogger.error("${response.statusCode} - $eventName")
+            MLinkLogger.error("Error:${response.statusCode} - $eventName")
         }
     }
 }
