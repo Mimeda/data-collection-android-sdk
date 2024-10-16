@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.mimeda.mlinkmobile"
+    namespace = "com.mimeda.sdk"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.mimeda.mlinkmobile"
+        applicationId = "com.mimeda.sdk"
         minSdk = 23
         targetSdk = 34
         versionCode = 1

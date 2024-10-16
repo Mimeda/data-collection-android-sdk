@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mimeda.mlinkmobile"
+    namespace = "com.mimeda.sdk"
     compileSdk = 34
 
     android.buildFeatures.buildConfig = true
@@ -68,7 +68,7 @@ afterEvaluate {
                     from(components.findByName(it.name))
 
                     groupId = "com.mimeda.mlinkmobile"
-                    artifactId = "mlinkmobile"
+                    artifactId = "android"
                     version = "1.0.0"
                 }
             }
