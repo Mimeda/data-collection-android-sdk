@@ -11,6 +11,7 @@ internal object MLinkConstants {
     const val MLINK_SESSION_ID = "mLinkSessionId"
 
     const val DATE_FORMAT = "dd.MM.yyyy HH:mm"
+    const val THIRTY_MINUTES = 30 * 60 * 1000
 
     const val HOME = "Home"
     const val LISTING = "Listing"

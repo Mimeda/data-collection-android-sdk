@@ -39,6 +39,7 @@ import com.mimeda.sdk.common.MLinkConstants.SEARCH_VIEW
 import com.mimeda.sdk.common.MLinkConstants.SESSION_ID
 import com.mimeda.sdk.common.MLinkConstants.SHARED_PREF_NAME
 import com.mimeda.sdk.common.MLinkConstants.SUCCESS
+import com.mimeda.sdk.common.MLinkConstants.THIRTY_MINUTES
 import com.mimeda.sdk.common.MLinkConstants.TIMESTAMP
 import com.mimeda.sdk.common.MLinkConstants.USER_ID
 import com.mimeda.sdk.common.MLinkConstants.VERSION
@@ -73,8 +74,7 @@ object MLinkEvents {
         val startTime = sharedPref.getLong(MLINK_TIME, 0L)
         val currentTime = System.currentTimeMillis()
         val differenceInMillis = currentTime - startTime
-        val thirtyMinutesInMillis = 10 * 1000
-        val isThirtyMinutesPassed = differenceInMillis >= thirtyMinutesInMillis
+        val isThirtyMinutesPassed = differenceInMillis >= THIRTY_MINUTES
 
         val sessionId = when {
             startTime == 0L -> generateSessionId(payload.userId, uuid)
