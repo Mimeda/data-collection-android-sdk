@@ -2,11 +2,11 @@ package com.mimeda.sdk
 
 import android.util.Log
 
-internal object MLinkLogger {
+internal object MlinkLogger {
 
     var isEnabled = false
 
-    private const val TAG = "MLinkLog"
+    private const val TAG = "MlinkLog"
 
     fun error(message: String?) {
         if (isEnabled && message != null) Log.e(TAG, message)
@@ -18,5 +18,9 @@ internal object MLinkLogger {
 
     fun debug(message: String?) {
         if (isEnabled && message != null) Log.d(TAG, message)
+    }
+
+    fun warning(message: String?) {
+        if (isEnabled && message != null) Log.w(TAG, message)
     }
 }

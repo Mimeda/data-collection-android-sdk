@@ -1,6 +1,6 @@
 package com.mimeda.sdk.common
 
-internal object MLinkConstants {
+internal object MlinkConstants {
 
     var appId: Int? = null
     var publisher: String? = null
@@ -33,6 +33,7 @@ internal object MLinkConstants {
     const val CART_VIEW = "Cart.View"
     const val PURCHASE_SUCCESS = "Purchase.Success"
 
+    const val ANDROID = "Android"
     const val VERSION = "?v"
     const val PUBLISHER = "&pub"
     const val APP_ID = "&appid"

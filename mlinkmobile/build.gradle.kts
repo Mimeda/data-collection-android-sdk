@@ -12,7 +12,7 @@ android {
     android.buildFeatures.buildConfig = true
 
     defaultConfig {
-        minSdk = 23
+        minSdk = 21
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -67,7 +67,7 @@ afterEvaluate {
                 register<MavenPublication>(it.name) {
                     from(components.findByName(it.name))
 
-                    groupId = "com.mimeda.mlinkmobile"
+                    groupId = "com.mimeda.mlink"
                     artifactId = "android"
                     version = "1.0.0"
                 }

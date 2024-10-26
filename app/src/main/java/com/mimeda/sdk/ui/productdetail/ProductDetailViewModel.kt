@@ -3,11 +3,11 @@ package com.mimeda.sdk.ui.productdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mimeda.sdk.MlinkEvents
+import com.mimeda.sdk.data.MlinkEventPayload
+import com.mimeda.sdk.data.MlinkEventProduct
 import com.mimeda.sdk.data.MockData
-import com.mimeda.sdk.data.model.MlinkEventProduct
-import com.mimeda.sdk.data.model.Payload
 import com.mimeda.sdk.data.model.Product
-import com.mimeda.sdk.data.repository.MLinkEvents
 import com.mimeda.sdk.ui.productdetail.ProductDetailContract.UiAction
 import com.mimeda.sdk.ui.productdetail.ProductDetailContract.UiEffect
 import com.mimeda.sdk.ui.productdetail.ProductDetailContract.UiState
@@ -52,7 +52,19 @@ class ProductDetailViewModel(
                 price = it?.price ?: 0.0,
             )
         }
-        MLinkEvents.productDetailsView(Payload(123, listOf(product?.barcode ?: 0), mappedProduct))
+        MlinkEvents.ProductDetails.view(
+            MlinkEventPayload(
+                userId = 123,
+                adIDList = listOf(product?.barcode ?: 0),
+                listOf(
+                    MlinkEventProduct(
+                        barcode = 1,
+                        quantity = 1,
+                        price = 100.0,
+                    )
+                )
+            )
+        )
     }
 }
 

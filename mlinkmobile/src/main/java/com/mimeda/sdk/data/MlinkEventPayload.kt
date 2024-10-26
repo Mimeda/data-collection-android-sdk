@@ -1,8 +1,8 @@
-package com.mimeda.sdk.data.model
+package com.mimeda.sdk.data
 
-data class Payload(
-    val userId: Int,
-    val lineItems: List<Int>,
+data class MlinkEventPayload(
+    val userId: Int? = null,
+    val adIDList: List<Int>? = null,
     val products: List<MlinkEventProduct>? = null,
 )
 
