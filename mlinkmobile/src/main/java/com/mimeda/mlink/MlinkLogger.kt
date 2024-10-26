@@ -1,4 +1,4 @@
-package com.mimeda.sdk
+package com.mimeda.mlink
 
 import android.util.Log
 

@@ -1,4 +1,4 @@
-package com.mimeda.sdk.network.client
+package com.mimeda.mlink.network.client
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

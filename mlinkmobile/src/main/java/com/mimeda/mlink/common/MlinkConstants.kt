@@ -1,4 +1,4 @@
-package com.mimeda.sdk.common
+package com.mimeda.mlink.common
 
 internal object MlinkConstants {
 

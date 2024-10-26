@@ -6,15 +6,16 @@ plugins {
 }
 
 android {
-    namespace = "com.mimeda.sdk"
+    namespace = "com.mimeda.mlink"
     compileSdk = 34
-
-    android.buildFeatures.buildConfig = true
 
     defaultConfig {
         minSdk = 21
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        buildFeatures {
+            buildConfig = true
+        }
     }
 
     buildTypes {

@@ -1,4 +1,4 @@
-package com.mimeda.sdk.data
+package com.mimeda.mlink.data
 
 data class MlinkEventPayload(
     val userId: Int? = null,

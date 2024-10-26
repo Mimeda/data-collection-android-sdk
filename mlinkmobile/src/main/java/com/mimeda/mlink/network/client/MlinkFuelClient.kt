@@ -1,9 +1,9 @@
-package com.mimeda.sdk.network.client
+package com.mimeda.mlink.network.client
 
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.httpGet
-import com.mimeda.sdk.MlinkLogger
+import com.mimeda.mlink.MlinkLogger
 import kotlinx.coroutines.withContext
 
 internal class MlinkFuelClient : MlinkApiClient() {

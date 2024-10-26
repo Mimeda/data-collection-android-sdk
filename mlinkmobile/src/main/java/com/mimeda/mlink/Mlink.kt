@@ -1,8 +1,8 @@
-package com.mimeda.sdk
+package com.mimeda.mlink
 
 import android.content.Context
 import androidx.annotation.Keep
-import com.mimeda.sdk.common.MlinkConstants
+import com.mimeda.mlink.common.MlinkConstants
 
 @Keep
 object Mlink {

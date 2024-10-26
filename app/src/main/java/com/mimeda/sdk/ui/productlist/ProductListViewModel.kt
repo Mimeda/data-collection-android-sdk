@@ -2,9 +2,9 @@ package com.mimeda.sdk.ui.productlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mimeda.sdk.MlinkEvents
-import com.mimeda.sdk.data.MlinkEventPayload
-import com.mimeda.sdk.data.MlinkEventProduct
+import com.mimeda.mlink.MlinkEvents
+import com.mimeda.mlink.data.MlinkEventPayload
+import com.mimeda.mlink.data.MlinkEventProduct
 import com.mimeda.sdk.data.model.Product
 import com.mimeda.sdk.ui.productlist.ProductListContract.UiEffect
 import com.mimeda.sdk.ui.productlist.ProductListContract.UiState
