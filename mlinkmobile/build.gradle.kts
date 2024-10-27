@@ -5,9 +5,11 @@ plugins {
     id("maven-publish")
 }
 
+apply("https://raw.githubusercontent.com/sky-uk/gradle-maven-plugin/master/gradle-mavenizer.gradle")
+
 android {
     namespace = "com.mimeda.mlink"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21

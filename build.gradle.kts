@@ -7,3 +7,9 @@ plugins {
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.hilt) apply false
 }
+
+buildscript {
+    dependencies {
+        classpath(libs.android.maven.gradle.plugin)
+    }
+}
