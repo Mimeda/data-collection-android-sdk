@@ -63,6 +63,8 @@ detekt {
     buildUponDefaultConfig = true
 }
 
+group = "com.mimeda.mlink"
+
 afterEvaluate {
     android.libraryVariants.forEach {
         publishing {
