@@ -9,7 +9,7 @@ apply("https://raw.githubusercontent.com/sky-uk/gradle-maven-plugin/master/gradl
 
 android {
     namespace = "com.mimeda.mlink"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
