@@ -63,6 +63,7 @@ detekt {
     buildUponDefaultConfig = true
 }
 
+/*
 afterEvaluate {
     android.libraryVariants.forEach {
         publishing {
@@ -77,4 +78,4 @@ afterEvaluate {
             }
         }
     }
-}
+}*/
