@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.detekt)
     id("maven-publish")
 }
-
+group = "com.mimeda.mlink"
 apply("https://raw.githubusercontent.com/sky-uk/gradle-maven-plugin/master/gradle-mavenizer.gradle")
 
 android {
@@ -62,8 +62,6 @@ detekt {
     autoCorrect = true
     buildUponDefaultConfig = true
 }
-
-group = "com.mimeda.mlink"
 
 afterEvaluate {
     android.libraryVariants.forEach {
