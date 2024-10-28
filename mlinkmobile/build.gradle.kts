@@ -1,3 +1,5 @@
+import io.grpc.internal.SharedResourceHolder.release
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -5,7 +7,6 @@ plugins {
     id("maven-publish")
 }
 group = "com.mimeda.mlink"
-apply("https://raw.githubusercontent.com/sky-uk/gradle-maven-plugin/master/gradle-mavenizer.gradle")
 
 android {
     namespace = "com.mimeda.mlink"
@@ -63,7 +64,6 @@ detekt {
     buildUponDefaultConfig = true
 }
 
-/*
 afterEvaluate {
     android.libraryVariants.forEach {
         publishing {
@@ -78,4 +78,4 @@ afterEvaluate {
             }
         }
     }
-}*/
+}
