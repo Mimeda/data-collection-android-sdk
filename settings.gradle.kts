@@ -19,11 +19,6 @@ dependencyResolutionManagement {
 
         maven {
             setUrl("https://jitpack.io")
-            credentials {
-                val authToken = System.getProperty("authToken") ?: "default_value"
-                this.username = username
-                this.password = authToken
-            }
         }
     }
 }

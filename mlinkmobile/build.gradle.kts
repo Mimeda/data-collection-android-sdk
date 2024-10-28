@@ -1,5 +1,3 @@
-import io.grpc.internal.SharedResourceHolder.release
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
