@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.mimeda.sdk.ui.navigation.ProductAppNavigation
 import com.mimeda.sdk.ui.theme.MlinkMobileSDKAndroidTheme
-import dagger.hilt.android.AndroidEntryPoint
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

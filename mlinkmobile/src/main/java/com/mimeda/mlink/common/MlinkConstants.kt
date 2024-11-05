@@ -46,6 +46,5 @@ internal object MlinkConstants {
     const val AID = "&aid"
     const val USER_ID = "&uid"
     const val SESSION_ID = "&s"
-    const val LINE_ITEMS = "&li"
     const val PRODUCTS = "&pl"
 }

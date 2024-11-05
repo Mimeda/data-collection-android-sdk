@@ -6,9 +6,9 @@ import com.mimeda.mlink.MlinkEvents
 import com.mimeda.mlink.data.MlinkEventPayload
 import com.mimeda.mlink.data.MlinkEventProduct
 import com.mimeda.sdk.data.model.Product
+import com.mimeda.sdk.ui.productlist.ProductListContract.UiAction
 import com.mimeda.sdk.ui.productlist.ProductListContract.UiEffect
 import com.mimeda.sdk.ui.productlist.ProductListContract.UiState
-import com.mimeda.sdk.ui.productlist.ProductListContract.UiAction
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,14 +42,7 @@ class ProductListViewModel : ViewModel() {
             // Your service call here
             val payload = MlinkEventPayload(
                 userId = 0,
-                adIDList = listOf(1, 2, 3),
-                products = listOf(
-                    MlinkEventProduct(
-                        barcode = 1,
-                        quantity = 1,
-                        price = 100.0,
-                    ),
-                )
+                categoryId = "123"
             )
             MlinkEvents.Listing.view(payload)
         }

@@ -8,7 +8,7 @@ group = "com.mimeda.mlink"
 
 android {
     namespace = "com.mimeda.mlink"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21
@@ -23,12 +23,12 @@ android {
         debug {
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", "\"https://collector.avvamobiledemo.com/im.gif?\"")
-            buildConfigField("String","VERSION_NAME","\"1.0.0\"")
+            buildConfigField("String", "VERSION_NAME", "\"1.0.0\"")
         }
         release {
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", "\"https://collector.avvamobiledemo.com/im.gif?\"")
-            buildConfigField("String","VERSION_NAME","\"1.0.0\"")
+            buildConfigField("String", "VERSION_NAME", "\"1.0.0\"")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

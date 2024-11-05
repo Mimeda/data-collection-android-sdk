@@ -18,7 +18,6 @@ import com.mimeda.mlink.common.MlinkConstants.HOME
 import com.mimeda.mlink.common.MlinkConstants.HOME_ADD_TO_CART
 import com.mimeda.mlink.common.MlinkConstants.HOME_VIEW
 import com.mimeda.mlink.common.MlinkConstants.LANGUAGE
-import com.mimeda.mlink.common.MlinkConstants.LINE_ITEMS
 import com.mimeda.mlink.common.MlinkConstants.LISTING
 import com.mimeda.mlink.common.MlinkConstants.LISTING_ADD_TO_CART
 import com.mimeda.mlink.common.MlinkConstants.LISTING_VIEW
@@ -87,7 +86,6 @@ object MlinkEvents {
                 AID to sharedPref.getString(MLINK_UUID, ""),
                 USER_ID to payload.userId.toString(),
                 SESSION_ID to sessionId,
-                LINE_ITEMS to payload.adIDList?.joinToString(","),
                 PRODUCTS to productsString
             )
         }
@@ -142,12 +140,16 @@ object MlinkEvents {
 
     object Listing {
         suspend fun view(payload: MlinkEventPayload) {
+            if (payload.categoryId.isNullOrEmpty()) {
+                MlinkLogger.warning("Mlink: You Should Send Category ID")
+            }
             client.get(prepareUrl(payload, LISTING, VIEW), LISTING_VIEW)
         }
 
         suspend fun addToCart(payload: MlinkEventPayload) {
-            if (payload.products.isNullOrEmpty()) {
-                MlinkLogger.warning("Mlink: You Should Send Products")
+            when {
+                payload.products.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Products")
+                payload.categoryId.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Category ID")
             }
             client.get(prepareUrl(payload, LISTING, ADD_TO_CART), LISTING_ADD_TO_CART)
         }
@@ -155,12 +157,17 @@ object MlinkEvents {
 
     object Search {
         suspend fun view(payload: MlinkEventPayload) {
+            when {
+                payload.keyword.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Keyword")
+                payload.totalRowCount == null -> MlinkLogger.warning("Mlink: You Should Send Total Row Count")
+            }
             client.get(prepareUrl(payload, SEARCH, VIEW), SEARCH_VIEW)
         }
 
         suspend fun addToCart(payload: MlinkEventPayload) {
-            if (payload.products.isNullOrEmpty()) {
-                MlinkLogger.warning("Mlink: You Should Send Products")
+            when {
+                payload.products.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Products")
+                payload.keyword.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Keyword")
             }
             client.get(prepareUrl(payload, SEARCH, ADD_TO_CART), SEARCH_ADD_TO_CART)
         }
@@ -168,6 +175,9 @@ object MlinkEvents {
 
     object ProductDetails {
         suspend fun view(payload: MlinkEventPayload) {
+            if (payload.products.isNullOrEmpty()) {
+                MlinkLogger.warning("Mlink: You Should Send Products")
+            }
             client.get(prepareUrl(payload, PRODUCT_DETAILS, VIEW), PRODUCT_DETAILS_VIEW)
         }
 
@@ -181,14 +191,18 @@ object MlinkEvents {
 
     object Cart {
         suspend fun view(payload: MlinkEventPayload) {
+            if (payload.products.isNullOrEmpty()) {
+                MlinkLogger.warning("Mlink: You Should Send Products")
+            }
             client.get(prepareUrl(payload, CART, VIEW), CART_VIEW)
         }
     }
 
     object Purchase {
         suspend fun success(payload: MlinkEventPayload) {
-            if (payload.products.isNullOrEmpty()) {
-                MlinkLogger.warning("Mlink: You Should Send Products")
+            when {
+                payload.transactionId == null -> MlinkLogger.warning("Mlink: You Should Send Transaction ID")
+                payload.products.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Products")
             }
             client.get(prepareUrl(payload, PURCHASE, SUCCESS), PURCHASE_SUCCESS)
         }

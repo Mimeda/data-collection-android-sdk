@@ -55,14 +55,6 @@ class ProductDetailViewModel(
         MlinkEvents.ProductDetails.view(
             MlinkEventPayload(
                 userId = 123,
-                adIDList = listOf(product?.barcode ?: 0),
-                listOf(
-                    MlinkEventProduct(
-                        barcode = 1,
-                        quantity = 1,
-                        price = 100.0,
-                    )
-                )
             )
         )
     }
