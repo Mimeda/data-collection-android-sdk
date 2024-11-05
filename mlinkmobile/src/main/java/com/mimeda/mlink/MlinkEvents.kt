@@ -10,6 +10,7 @@ import com.mimeda.mlink.common.MlinkConstants.ANDROID
 import com.mimeda.mlink.common.MlinkConstants.APP_ID
 import com.mimeda.mlink.common.MlinkConstants.CART
 import com.mimeda.mlink.common.MlinkConstants.CART_VIEW
+import com.mimeda.mlink.common.MlinkConstants.CATEGORY_ID
 import com.mimeda.mlink.common.MlinkConstants.DATE_FORMAT
 import com.mimeda.mlink.common.MlinkConstants.DEVICE_ID
 import com.mimeda.mlink.common.MlinkConstants.EVENT
@@ -17,6 +18,7 @@ import com.mimeda.mlink.common.MlinkConstants.EVENT_PAGE
 import com.mimeda.mlink.common.MlinkConstants.HOME
 import com.mimeda.mlink.common.MlinkConstants.HOME_ADD_TO_CART
 import com.mimeda.mlink.common.MlinkConstants.HOME_VIEW
+import com.mimeda.mlink.common.MlinkConstants.KEYWORD
 import com.mimeda.mlink.common.MlinkConstants.LANGUAGE
 import com.mimeda.mlink.common.MlinkConstants.LISTING
 import com.mimeda.mlink.common.MlinkConstants.LISTING_ADD_TO_CART
@@ -40,6 +42,8 @@ import com.mimeda.mlink.common.MlinkConstants.SHARED_PREF_NAME
 import com.mimeda.mlink.common.MlinkConstants.SUCCESS
 import com.mimeda.mlink.common.MlinkConstants.THIRTY_MINUTES
 import com.mimeda.mlink.common.MlinkConstants.TIMESTAMP
+import com.mimeda.mlink.common.MlinkConstants.TOTAL_ROW_COUNT
+import com.mimeda.mlink.common.MlinkConstants.TRANSACTION_ID
 import com.mimeda.mlink.common.MlinkConstants.USER_ID
 import com.mimeda.mlink.common.MlinkConstants.VERSION
 import com.mimeda.mlink.common.MlinkConstants.VIEW
@@ -86,7 +90,11 @@ object MlinkEvents {
                 AID to sharedPref.getString(MLINK_UUID, ""),
                 USER_ID to payload.userId.toString(),
                 SESSION_ID to sessionId,
-                PRODUCTS to productsString
+                PRODUCTS to productsString,
+                CATEGORY_ID to payload.categoryId,
+                KEYWORD to payload.keyword,
+                TRANSACTION_ID to payload.transactionId,
+                TOTAL_ROW_COUNT to payload.totalRowCount,
             )
         }
     }
