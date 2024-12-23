@@ -11,6 +11,7 @@ object Mlink {
         MlinkConstants.appId = appId
         MlinkConstants.publisher = publisher
         MlinkEvents.init(context)
+        MlinkAds.init(context)
         MlinkLogger.info("Mlink initialized successfully.")
     }
 }

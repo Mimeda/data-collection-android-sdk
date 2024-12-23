@@ -48,6 +48,7 @@ import com.mimeda.mlink.common.MlinkConstants.USER_ID
 import com.mimeda.mlink.common.MlinkConstants.VERSION
 import com.mimeda.mlink.common.MlinkConstants.VIEW
 import com.mimeda.mlink.data.MlinkEventPayload
+import com.mimeda.mlink.data.UrlPath
 import com.mimeda.mlink.network.client.MlinkFuelClient
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -77,6 +78,7 @@ object MlinkEvents {
 
         return buildString {
             append(BuildConfig.BASE_URL)
+            append(UrlPath.EVENT.value)
             appendParams(
                 VERSION to BuildConfig.VERSION_NAME,
                 PUBLISHER to MlinkConstants.publisher,
@@ -95,9 +97,12 @@ object MlinkEvents {
                 KEYWORD to payload.keyword,
                 TRANSACTION_ID to payload.transactionId,
                 TOTAL_ROW_COUNT to payload.totalRowCount,
+                "&li" to 0,
             )
         }
     }
+
+
 
     private fun getSessionId(userId: Int, uuid: String): String {
         val startTime = sharedPref.getLong(MLINK_TIME, 0L)

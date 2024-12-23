@@ -9,8 +9,4 @@ data class MlinkEventPayload(
     val products: List<MlinkEventProduct>? = null,
 )
 
-data class MlinkEventProduct(
-    val barcode: Int,
-    val quantity: Int,
-    val price: Double,
-)
+

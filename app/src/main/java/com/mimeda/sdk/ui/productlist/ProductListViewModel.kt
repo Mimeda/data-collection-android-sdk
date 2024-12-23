@@ -2,7 +2,9 @@ package com.mimeda.sdk.ui.productlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mimeda.mlink.MlinkAds
 import com.mimeda.mlink.MlinkEvents
+import com.mimeda.mlink.data.MlinkAdPayload
 import com.mimeda.mlink.data.MlinkEventPayload
 import com.mimeda.mlink.data.MlinkEventProduct
 import com.mimeda.sdk.data.model.Product
@@ -42,9 +44,31 @@ class ProductListViewModel : ViewModel() {
             // Your service call here
             val payload = MlinkEventPayload(
                 userId = 0,
-                categoryId = "123"
+                categoryId = "123",
+                products = listOf(
+                    MlinkEventProduct(
+                        barcode = 123,
+                        quantity = 1,
+                        price = 100.0
+                    ),
+                    MlinkEventProduct(
+                        barcode = 456,
+                        quantity = 2,
+                        price = 200.0
+                    )
+                ),
+                transactionId = 123,
+                totalRowCount = 2,
             )
             MlinkEvents.Listing.view(payload)
+            MlinkAds.impression(
+                MlinkAdPayload(
+                    lineItemId = 123,
+                    creativeId = 123,
+                    adUnit = "ad_unit",
+                    keyword = "keyword",
+                )
+            )
         }
     }
 }
