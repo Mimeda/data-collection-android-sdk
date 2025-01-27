@@ -57,7 +57,6 @@ fun ProductListScreen(
         }
     }
 
-    // Your ad load logic here
     LaunchedEffect(Unit) {
         onAction(UiAction.SendAdImpression)
     }
