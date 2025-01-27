@@ -58,7 +58,9 @@ fun ProductListScreen(
     }
 
     // Your ad load logic here
-    onAction(UiAction.SendAdImpression)
+    LaunchedEffect(Unit) {
+        onAction(UiAction.SendAdImpression)
+    }
 
     Column(
         modifier = Modifier

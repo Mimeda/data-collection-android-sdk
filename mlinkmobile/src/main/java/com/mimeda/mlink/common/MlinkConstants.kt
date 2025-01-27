@@ -36,7 +36,7 @@ internal object MlinkConstants {
     const val ANDROID = "Android"
     const val VERSION = "v"
     const val PUBLISHER = "&pub"
-    const val APP_ID = "&appid"
+    const val APP_ID = "&appId"
     const val TIMESTAMP = "&t"
     const val DEVICE_ID = "&d"
     const val LANGUAGE = "&lng"
