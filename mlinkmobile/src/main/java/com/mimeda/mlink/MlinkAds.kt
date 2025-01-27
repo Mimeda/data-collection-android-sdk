@@ -3,14 +3,20 @@ package com.mimeda.mlink
 import android.content.Context
 import android.content.SharedPreferences
 import com.mimeda.mlink.common.MlinkConstants.AD_UNIT
+import com.mimeda.mlink.common.MlinkConstants.AID
 import com.mimeda.mlink.common.MlinkConstants.CLICK
-import com.mimeda.mlink.common.MlinkConstants.CLICK_URL
 import com.mimeda.mlink.common.MlinkConstants.CREATIVE_ID
 import com.mimeda.mlink.common.MlinkConstants.IMPRESSION
-import com.mimeda.mlink.common.MlinkConstants.IMPRESSION_URL
 import com.mimeda.mlink.common.MlinkConstants.KEYWORD_AD
 import com.mimeda.mlink.common.MlinkConstants.LINE_ITEM_ID
+import com.mimeda.mlink.common.MlinkConstants.MLINK_UUID
+import com.mimeda.mlink.common.MlinkConstants.SESSION_ID
 import com.mimeda.mlink.common.MlinkConstants.SHARED_PREF_NAME
+import com.mimeda.mlink.common.MlinkConstants.TIMESTAMP
+import com.mimeda.mlink.common.MlinkConstants.USER_ID
+import com.mimeda.mlink.common.appendParams
+import com.mimeda.mlink.common.getSessionId
+import com.mimeda.mlink.common.prepareUuid
 import com.mimeda.mlink.data.MlinkAdPayload
 import com.mimeda.mlink.data.UrlPath
 import com.mimeda.mlink.network.client.MlinkFuelClient
@@ -25,21 +31,22 @@ object MlinkAds {
     }
 
     private fun prepareUrl(payload: MlinkAdPayload, urlPath: UrlPath): String {
+        val uuid = sharedPref.prepareUuid()
+
+        val sessionId = sharedPref.getSessionId(payload.userId ?: -1, uuid)
         return buildString {
             append(BuildConfig.BASE_URL)
             append(urlPath.value)
             appendParams(
-                LINE_ITEM_ID to payload.lineItemId,
                 CREATIVE_ID to payload.creativeId,
+                LINE_ITEM_ID to payload.lineItemId,
                 AD_UNIT to payload.adUnit,
                 KEYWORD_AD to payload.keyword,
+                AID to sharedPref.getString(MLINK_UUID, ""),
+                USER_ID to payload.userId.toString(),
+                TIMESTAMP to System.currentTimeMillis().toString(),
+                SESSION_ID to sessionId,
             )
-        }
-    }
-
-    private fun StringBuilder.appendParams(vararg params: Pair<String, Any?>) {
-        params.forEach { (key, value) ->
-            value?.let { append("$key=$it") }
         }
     }
 

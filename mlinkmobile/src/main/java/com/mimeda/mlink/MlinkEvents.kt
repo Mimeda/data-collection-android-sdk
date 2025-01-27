@@ -11,7 +11,6 @@ import com.mimeda.mlink.common.MlinkConstants.APP_ID
 import com.mimeda.mlink.common.MlinkConstants.CART
 import com.mimeda.mlink.common.MlinkConstants.CART_VIEW
 import com.mimeda.mlink.common.MlinkConstants.CATEGORY_ID
-import com.mimeda.mlink.common.MlinkConstants.DATE_FORMAT
 import com.mimeda.mlink.common.MlinkConstants.DEVICE_ID
 import com.mimeda.mlink.common.MlinkConstants.EVENT
 import com.mimeda.mlink.common.MlinkConstants.EVENT_PAGE
@@ -20,11 +19,10 @@ import com.mimeda.mlink.common.MlinkConstants.HOME_ADD_TO_CART
 import com.mimeda.mlink.common.MlinkConstants.HOME_VIEW
 import com.mimeda.mlink.common.MlinkConstants.KEYWORD
 import com.mimeda.mlink.common.MlinkConstants.LANGUAGE
+import com.mimeda.mlink.common.MlinkConstants.LINE_ITEM_ID
 import com.mimeda.mlink.common.MlinkConstants.LISTING
 import com.mimeda.mlink.common.MlinkConstants.LISTING_ADD_TO_CART
 import com.mimeda.mlink.common.MlinkConstants.LISTING_VIEW
-import com.mimeda.mlink.common.MlinkConstants.MLINK_SESSION_ID
-import com.mimeda.mlink.common.MlinkConstants.MLINK_TIME
 import com.mimeda.mlink.common.MlinkConstants.MLINK_UUID
 import com.mimeda.mlink.common.MlinkConstants.PLATFORM
 import com.mimeda.mlink.common.MlinkConstants.PRODUCTS
@@ -40,20 +38,19 @@ import com.mimeda.mlink.common.MlinkConstants.SEARCH_VIEW
 import com.mimeda.mlink.common.MlinkConstants.SESSION_ID
 import com.mimeda.mlink.common.MlinkConstants.SHARED_PREF_NAME
 import com.mimeda.mlink.common.MlinkConstants.SUCCESS
-import com.mimeda.mlink.common.MlinkConstants.THIRTY_MINUTES
 import com.mimeda.mlink.common.MlinkConstants.TIMESTAMP
 import com.mimeda.mlink.common.MlinkConstants.TOTAL_ROW_COUNT
 import com.mimeda.mlink.common.MlinkConstants.TRANSACTION_ID
 import com.mimeda.mlink.common.MlinkConstants.USER_ID
 import com.mimeda.mlink.common.MlinkConstants.VERSION
 import com.mimeda.mlink.common.MlinkConstants.VIEW
+import com.mimeda.mlink.common.appendParams
+import com.mimeda.mlink.common.getSessionId
+import com.mimeda.mlink.common.prepareUuid
 import com.mimeda.mlink.data.MlinkEventPayload
 import com.mimeda.mlink.data.UrlPath
 import com.mimeda.mlink.network.client.MlinkFuelClient
-import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
-import java.util.UUID
 
 object MlinkEvents {
 
@@ -65,14 +62,10 @@ object MlinkEvents {
     }
 
     private fun prepareUrl(payload: MlinkEventPayload, event: String, eventPage: String): String {
-        val uuid = if (sharedPref.getString(MLINK_UUID, "").isNullOrEmpty()) {
-            UUID.randomUUID().toString().apply { sharedPref.edit().putString(MLINK_UUID, this).apply() }
-        } else {
-            sharedPref.getString(MLINK_UUID, "").orEmpty()
-        }
+        val uuid = sharedPref.prepareUuid()
 
         val productsString = payload.products?.joinToString(";") { "${it.barcode}:${it.quantity}:${it.price}" }
-        val sessionId = getSessionId(payload.userId ?: -1, uuid)
+        val sessionId = sharedPref.getSessionId(payload.userId ?: -1, uuid)
         val language = "${Locale.getDefault().language}-${Locale.getDefault().country}"
         val platform = "${Build.MANUFACTURER.uppercase()}-${Build.MODEL}-$ANDROID-${Build.VERSION.RELEASE}"
 
@@ -97,45 +90,9 @@ object MlinkEvents {
                 KEYWORD to payload.keyword,
                 TRANSACTION_ID to payload.transactionId,
                 TOTAL_ROW_COUNT to payload.totalRowCount,
-                "&li" to 0,
+                LINE_ITEM_ID to 0,
             )
         }
-    }
-
-
-
-    private fun getSessionId(userId: Int, uuid: String): String {
-        val startTime = sharedPref.getLong(MLINK_TIME, 0L)
-        val currentTime = System.currentTimeMillis()
-        val isThirtyMinutesPassed = currentTime - startTime >= THIRTY_MINUTES
-
-        return when {
-            startTime == 0L -> generateSessionId(userId, uuid)
-            isThirtyMinutesPassed -> {
-                val newUuid = UUID.randomUUID().toString().also {
-                    sharedPref.edit().putString(MLINK_UUID, it).apply()
-                }
-                generateSessionId(userId, newUuid)
-            }
-
-            else -> sharedPref.getString(MLINK_SESSION_ID, "").orEmpty()
-        }
-    }
-
-    private fun StringBuilder.appendParams(vararg params: Pair<String, Any?>) {
-        params.forEach { (key, value) ->
-            value?.let { append("$key=$it") }
-        }
-    }
-
-    private fun generateSessionId(userId: Int, uuid: String): String {
-        val time = System.currentTimeMillis()
-        val formattedTime = SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(Date(time))
-        sharedPref.edit().apply {
-            putLong(MLINK_TIME, time)
-            putString(MLINK_SESSION_ID, "${userId}-$uuid/$formattedTime")
-        }.apply()
-        return "${userId}-$uuid/$formattedTime"
     }
 
     object Home {

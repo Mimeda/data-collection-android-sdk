@@ -52,13 +52,11 @@ internal object MlinkConstants {
     const val TRANSACTION_ID = "&trans"
     const val TOTAL_ROW_COUNT = "&trc"
 
-    const val LINE_ITEM_ID = "lineItemId"
-    const val CREATIVE_ID = "&creativeId"
-    const val AD_UNIT = "&adUnit"
-    const val KEYWORD_AD = "&keyword"
+    const val CREATIVE_ID = "c"
+    const val LINE_ITEM_ID = "&li"
+    const val AD_UNIT = "&au"
+    const val KEYWORD_AD = "&kw"
 
-    const val IMPRESSION_URL = "/impression?"
     const val IMPRESSION = "Ad Impression"
-    const val CLICK_URL = "/click?"
     const val CLICK = "Ad Click"
 }
