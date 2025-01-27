@@ -6,11 +6,11 @@ import com.mimeda.mlink.MlinkAds
 import com.mimeda.mlink.MlinkEvents
 import com.mimeda.mlink.data.MlinkAdPayload
 import com.mimeda.mlink.data.MlinkEventPayload
-import com.mimeda.mlink.data.MlinkEventProduct
+import com.mimeda.sdk.data.MockData
 import com.mimeda.sdk.data.model.Product
-import com.mimeda.sdk.ui.productlist.ProductListContract.UiAction
-import com.mimeda.sdk.ui.productlist.ProductListContract.UiEffect
-import com.mimeda.sdk.ui.productlist.ProductListContract.UiState
+import com.mimeda.sdk.ui.productlist.ListContract.UiAction
+import com.mimeda.sdk.ui.productlist.ListContract.UiEffect
+import com.mimeda.sdk.ui.productlist.ListContract.UiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,44 +36,47 @@ class ProductListViewModel : ViewModel() {
             is UiAction.OnProductClick -> {
                 _uiEffect.send(UiEffect.GoToProductDetail(uiAction.productId))
             }
+
+            UiAction.SendAdImpression -> sendAdImpression()
+            UiAction.OnAdClick -> sendAdClick()
         }
     }
 
-    private fun getProducts() {
-        viewModelScope.launch {
-            // Your service call here
-            val payload = MlinkEventPayload(
-                userId = 0,
-                categoryId = "123",
-                products = listOf(
-                    MlinkEventProduct(
-                        barcode = 123,
-                        quantity = 1,
-                        price = 100.0
-                    ),
-                    MlinkEventProduct(
-                        barcode = 456,
-                        quantity = 2,
-                        price = 200.0
-                    )
-                ),
-                transactionId = 123,
-                totalRowCount = 2,
-            )
-            MlinkEvents.Listing.view(payload)
-            MlinkAds.impression(
-                MlinkAdPayload(
-                    lineItemId = 123,
-                    creativeId = 123,
-                    adUnit = "ad_unit",
-                    keyword = "keyword",
-                )
-            )
-        }
+    private fun getProducts() = viewModelScope.launch {
+        _uiState.value = UiState(isLoading = true)
+        val products = MockData.products
+        _uiState.value = UiState(isLoading = false, products = products)
+
+        val payload = MlinkEventPayload(
+            userId = 17,
+            categoryId = "1",
+        )
+        MlinkEvents.Listing.view(payload)
+    }
+
+    private fun sendAdImpression() = viewModelScope.launch {
+        val payload = MlinkAdPayload(
+            userId = 1,
+            lineItemId = 1,
+            creativeId = 1,
+            adUnit = "list",
+            keyword = "keyword",
+        )
+        MlinkAds.impression(payload)
+    }
+
+    private fun sendAdClick() = viewModelScope.launch {
+        val payload = MlinkAdPayload(
+            lineItemId = 1,
+            creativeId = 1,
+            adUnit = "list",
+            keyword = "keyword",
+        )
+        MlinkAds.click(payload)
     }
 }
 
-object ProductListContract {
+object ListContract {
     data class UiState(
         val isLoading: Boolean = false,
         val products: List<Product> = emptyList()
@@ -81,6 +84,8 @@ object ProductListContract {
 
     sealed class UiAction {
         data class OnProductClick(val productId: Int) : UiAction()
+        data object SendAdImpression : UiAction()
+        data object OnAdClick : UiAction()
     }
 
     sealed class UiEffect {
