@@ -8,7 +8,7 @@ class MainApp : Application() {
         super.onCreate()
         Mlink.initialize(
             context = this,
-            appId = 1,
+            appId = "651623751762",
             publisher = "Mimeda",
             isLogEnabled = true,
         )
