@@ -22,13 +22,15 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "\"https://bidding-eventcollector.azurewebsites.net\"")
-            buildConfigField("String", "VERSION_NAME", "\"1.0.4\"")
+            buildConfigField("String", "EVENT_URL", "\"https://bidding-eventcollector.azurewebsites.net\"")
+            buildConfigField("String", "PERFORMANCE_URL", "\"https://bidding-prfmnccollector.azurewebsites.net\"")
+            buildConfigField("String", "VERSION_NAME", "\"1.0.5\"")
         }
         release {
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "\"https://bidding-eventcollector.azurewebsites.net\"")
-            buildConfigField("String", "VERSION_NAME", "\"1.0.4\"")
+            buildConfigField("String", "EVENT_URL", "\"https://bidding-eventcollector.azurewebsites.net\"")
+            buildConfigField("String", "PERFORMANCE_URL", "\"https://bidding-prfmnccollector.azurewebsites.net\"")
+            buildConfigField("String", "VERSION_NAME", "\"1.0.5\"")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -71,7 +73,7 @@ afterEvaluate {
 
                     groupId = "com.mimeda.mlink"
                     artifactId = "android"
-                    version = "1.0.4"
+                    version = "1.0.5"
                 }
             }
         }
