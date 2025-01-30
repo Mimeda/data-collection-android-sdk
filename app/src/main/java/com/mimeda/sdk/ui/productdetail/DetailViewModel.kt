@@ -5,30 +5,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mimeda.mlink.MlinkEvents
 import com.mimeda.mlink.data.MlinkEventPayload
-import com.mimeda.mlink.data.MlinkEventProduct
 import com.mimeda.sdk.data.MockData
 import com.mimeda.sdk.data.model.Product
-import com.mimeda.sdk.ui.productdetail.ProductDetailContract.UiAction
-import com.mimeda.sdk.ui.productdetail.ProductDetailContract.UiEffect
-import com.mimeda.sdk.ui.productdetail.ProductDetailContract.UiState
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
+import com.mimeda.sdk.ui.productdetail.DetailContract.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ProductDetailViewModel(
+class DetailViewModel(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
-    private val _uiEffect by lazy { Channel<UiEffect>() }
-    val uiEffect: Flow<UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
@@ -36,22 +27,11 @@ class ProductDetailViewModel(
         }
     }
 
-    fun onAction(uiAction: UiAction) {
-
-    }
-
     private fun getProductDetail(productId: Int) = viewModelScope.launch {
         _uiState.update { it.copy(isLoading = true) }
         // Your service call here
         val product = MockData.products.find { it.id == productId }
         _uiState.update { it.copy(isLoading = false, product = product) }
-        val mappedProduct = listOf(product).map {
-            MlinkEventProduct(
-                barcode = it?.barcode ?: 0,
-                quantity = it?.quantity ?: 0,
-                price = it?.price ?: 0.0,
-            )
-        }
         MlinkEvents.ProductDetails.view(
             MlinkEventPayload(
                 userId = 123,
@@ -60,17 +40,9 @@ class ProductDetailViewModel(
     }
 }
 
-object ProductDetailContract {
+object DetailContract {
     data class UiState(
         val isLoading: Boolean = false,
         val product: Product? = null,
     )
-
-    sealed class UiAction {
-
-    }
-
-    sealed class UiEffect {
-
-    }
 }

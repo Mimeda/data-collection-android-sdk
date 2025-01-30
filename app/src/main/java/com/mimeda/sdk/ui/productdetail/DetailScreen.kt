@@ -18,17 +18,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mimeda.sdk.data.model.Product
-import com.mimeda.sdk.ui.productdetail.ProductDetailContract.UiAction
-import com.mimeda.sdk.ui.productdetail.ProductDetailContract.UiEffect
-import com.mimeda.sdk.ui.productdetail.ProductDetailContract.UiState
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
+import com.mimeda.sdk.ui.productdetail.DetailContract.UiState
 
 @Composable
 fun ProductDetailScreen(
     uiState: UiState,
-    uiEffect: Flow<UiEffect>,
-    onAction: (UiAction) -> Unit,
 ) {
     uiState.product?.let { product ->
         Column(
@@ -71,7 +65,5 @@ fun ProductDetailScreenPreview() {
                 description = "Product Description",
             )
         ),
-        uiEffect = emptyFlow(),
-        onAction = {},
     )
 }

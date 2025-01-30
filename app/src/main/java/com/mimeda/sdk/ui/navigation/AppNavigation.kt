@@ -2,7 +2,7 @@ package com.mimeda.sdk.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -10,20 +10,22 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.mimeda.sdk.ui.productdetail.DetailViewModel
 import com.mimeda.sdk.ui.productdetail.ProductDetailScreen
-import com.mimeda.sdk.ui.productdetail.ProductDetailViewModel
 import com.mimeda.sdk.ui.productlist.ProductListScreen
 import com.mimeda.sdk.ui.productlist.ProductListViewModel
 
 @Composable
 fun ProductAppNavigation(
+    modifier: Modifier = Modifier,
     navHostController: NavHostController,
 ) {
     NavHost(
+        modifier = modifier,
         navController = navHostController,
-        startDestination = "product_list"
+        startDestination = "list"
     ) {
-        composable("product_list") {
+        composable("list") {
             val viewModel: ProductListViewModel = viewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val uiEffect = viewModel.uiEffect
@@ -32,7 +34,7 @@ fun ProductAppNavigation(
                 uiEffect = uiEffect,
                 onAction = viewModel::onAction,
                 onNavigateToDetail = { productId ->
-                    navHostController.navigate("product_detail?productId=$productId")
+                    navHostController.navigate("detail?productId=$productId")
                 }
             )
         }
@@ -43,13 +45,10 @@ fun ProductAppNavigation(
                 navArgument("productId") { type = NavType.IntType }
             )
         ) {
-            val viewModel: ProductDetailViewModel = viewModel()
+            val viewModel: DetailViewModel = viewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val uiEffect = viewModel.uiEffect
             ProductDetailScreen(
                 uiState = uiState,
-                uiEffect = uiEffect,
-                onAction = viewModel::onAction,
             )
         }
     }

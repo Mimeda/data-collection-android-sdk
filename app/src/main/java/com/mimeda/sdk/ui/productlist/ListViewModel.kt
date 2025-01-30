@@ -57,20 +57,25 @@ class ProductListViewModel : ViewModel() {
     private fun sendAdImpression() = viewModelScope.launch {
         val payload = MlinkAdPayload(
             userId = 1,
+            productSku = "31231231",
             lineItemId = 1,
             creativeId = 1,
             adUnit = "list",
             keyword = "keyword",
+            payload = "Payload",
         )
         MlinkAds.impression(payload)
     }
 
     private fun sendAdClick() = viewModelScope.launch {
         val payload = MlinkAdPayload(
+            userId = 1,
+            productSku = "31231231",
             lineItemId = 1,
             creativeId = 1,
             adUnit = "list",
             keyword = "keyword",
+            payload = "Payload",
         )
         MlinkAds.click(payload)
     }
