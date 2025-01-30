@@ -10,6 +10,8 @@ import com.mimeda.mlink.common.MlinkConstants.IMPRESSION
 import com.mimeda.mlink.common.MlinkConstants.KEYWORD_AD
 import com.mimeda.mlink.common.MlinkConstants.LINE_ITEM_ID
 import com.mimeda.mlink.common.MlinkConstants.MLINK_UUID
+import com.mimeda.mlink.common.MlinkConstants.PAYLOAD
+import com.mimeda.mlink.common.MlinkConstants.PRODUCT_SKU
 import com.mimeda.mlink.common.MlinkConstants.SESSION_ID
 import com.mimeda.mlink.common.MlinkConstants.SHARED_PREF_NAME
 import com.mimeda.mlink.common.MlinkConstants.TIMESTAMP
@@ -35,16 +37,18 @@ object MlinkAds {
 
         val sessionId = sharedPref.getSessionId(payload.userId ?: -1, uuid)
         return buildString {
-            append(BuildConfig.BASE_URL)
+            append(BuildConfig.PERFORMANCE_URL)
             append(urlPath.value)
             appendParams(
                 CREATIVE_ID to payload.creativeId,
                 LINE_ITEM_ID to payload.lineItemId,
                 AD_UNIT to payload.adUnit,
                 KEYWORD_AD to payload.keyword,
+                PRODUCT_SKU to payload.productSku,
+                PAYLOAD to payload.payload,
                 AID to sharedPref.getString(MLINK_UUID, ""),
                 USER_ID to payload.userId.toString(),
-                TIMESTAMP to System.currentTimeMillis().toString(),
+                TIMESTAMP to System.currentTimeMillis(),
                 SESSION_ID to sessionId,
             )
         }

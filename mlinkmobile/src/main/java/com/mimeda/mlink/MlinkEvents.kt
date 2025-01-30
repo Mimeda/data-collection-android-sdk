@@ -70,13 +70,13 @@ object MlinkEvents {
         val platform = "${Build.MANUFACTURER.uppercase()}-${Build.MODEL}-$ANDROID-${Build.VERSION.RELEASE}"
 
         return buildString {
-            append(BuildConfig.BASE_URL)
+            append(BuildConfig.EVENT_URL)
             append(UrlPath.EVENT.value)
             appendParams(
                 VERSION to BuildConfig.VERSION_NAME,
                 PUBLISHER to MlinkConstants.publisher,
                 APP_ID to MlinkConstants.appId,
-                TIMESTAMP to System.currentTimeMillis().toString(),
+                TIMESTAMP to System.currentTimeMillis(),
                 DEVICE_ID to uuid,
                 LANGUAGE to language,
                 PLATFORM to platform,
@@ -90,7 +90,7 @@ object MlinkEvents {
                 KEYWORD to payload.keyword,
                 TRANSACTION_ID to payload.transactionId,
                 TOTAL_ROW_COUNT to payload.totalRowCount,
-                LINE_ITEM_ID to 0,
+                LINE_ITEM_ID to payload.lineItemIds,
             )
         }
     }

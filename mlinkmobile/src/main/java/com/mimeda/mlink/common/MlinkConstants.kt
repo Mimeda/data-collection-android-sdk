@@ -2,7 +2,7 @@ package com.mimeda.mlink.common
 
 internal object MlinkConstants {
 
-    var appId: Int? = null
+    var appId: String? = null
     var publisher: String? = null
 
     const val SHARED_PREF_NAME = "MLinkSharedPref"
@@ -56,6 +56,8 @@ internal object MlinkConstants {
     const val LINE_ITEM_ID = "&li"
     const val AD_UNIT = "&au"
     const val KEYWORD_AD = "&kw"
+    const val PRODUCT_SKU = "&psku"
+    const val PAYLOAD = "&pyl"
 
     const val IMPRESSION = "Ad Impression"
     const val CLICK = "Ad Click"

@@ -6,7 +6,7 @@ import com.mimeda.mlink.common.MlinkConstants
 
 @Keep
 object Mlink {
-    fun initialize(context: Context, appId: Int, publisher: String, isLogEnabled: Boolean = false) {
+    fun initialize(context: Context, appId: String, publisher: String, isLogEnabled: Boolean = false) {
         MlinkLogger.isEnabled = isLogEnabled
         MlinkConstants.appId = appId
         MlinkConstants.publisher = publisher
