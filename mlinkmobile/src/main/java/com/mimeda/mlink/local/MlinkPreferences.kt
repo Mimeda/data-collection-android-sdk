@@ -25,21 +25,6 @@ internal object MlinkPreferences {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
         )
-
-        val prefsFile = File(context.filesDir.parent, "/shared_prefs/$SHARED_PREF_NAME.xml")
-
-        if (prefsFile.exists()) {
-            Log.d("MlinkCheck", "SharedPreferences dosyası mevcut: ${prefsFile.absolutePath}")
-
-            try {
-                val fileContent = prefsFile.readText()
-                Log.d("MlinkCheck", "Şifrelenmiş İçerik:\n$fileContent")
-            } catch (e: Exception) {
-                Log.e("MlinkCheck", "Dosya okunamadı: ${e.message}")
-            }
-        } else {
-            Log.e("MlinkCheck", "SharedPreferences dosyası bulunamadı!")
-        }
     }
 
     fun getUuid(): String {
