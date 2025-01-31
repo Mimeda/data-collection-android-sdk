@@ -7,7 +7,5 @@ data class MlinkEventPayload(
     val transactionId: String? = null,
     val totalRowCount: Int? = null,
     val products: List<MlinkEventProduct>? = null,
-    val lineItemIds: String? = null,
+    val lineItemIds: List<Int>? = null,
 )
-
-

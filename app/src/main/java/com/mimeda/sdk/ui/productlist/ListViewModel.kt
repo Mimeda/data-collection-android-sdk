@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class ProductListViewModel : ViewModel() {
+class ListViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -50,6 +50,7 @@ class ProductListViewModel : ViewModel() {
         val payload = MlinkEventPayload(
             userId = 17,
             categoryId = "1",
+            lineItemIds = listOf(1, 2, 3),
         )
         MlinkEvents.Listing.view(payload)
     }
@@ -62,7 +63,7 @@ class ProductListViewModel : ViewModel() {
             creativeId = 1,
             adUnit = "list",
             keyword = "keyword",
-            payload = "Payload",
+            payload = "encrypted-data",
         )
         MlinkAds.impression(payload)
     }
@@ -75,7 +76,7 @@ class ProductListViewModel : ViewModel() {
             creativeId = 1,
             adUnit = "list",
             keyword = "keyword",
-            payload = "Payload",
+            payload = "encrypted-data",
         )
         MlinkAds.click(payload)
     }

@@ -21,7 +21,7 @@ import com.mimeda.sdk.data.model.Product
 import com.mimeda.sdk.ui.productdetail.DetailContract.UiState
 
 @Composable
-fun ProductDetailScreen(
+fun DetailScreen(
     uiState: UiState,
 ) {
     uiState.product?.let { product ->
@@ -53,8 +53,8 @@ fun ProductDetailScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun ProductDetailScreenPreview() {
-    ProductDetailScreen(
+fun DetailScreenPreview() {
+    DetailScreen(
         uiState = UiState(
             product = Product(
                 id = 1,

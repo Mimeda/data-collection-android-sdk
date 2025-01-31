@@ -1,180 +1,106 @@
 package com.mimeda.mlink
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.os.Build
-import com.mimeda.mlink.common.MlinkConstants
 import com.mimeda.mlink.common.MlinkConstants.ADD_TO_CART
-import com.mimeda.mlink.common.MlinkConstants.AID
-import com.mimeda.mlink.common.MlinkConstants.ANDROID
-import com.mimeda.mlink.common.MlinkConstants.APP_ID
 import com.mimeda.mlink.common.MlinkConstants.CART
 import com.mimeda.mlink.common.MlinkConstants.CART_VIEW
-import com.mimeda.mlink.common.MlinkConstants.CATEGORY_ID
-import com.mimeda.mlink.common.MlinkConstants.DEVICE_ID
-import com.mimeda.mlink.common.MlinkConstants.EVENT
-import com.mimeda.mlink.common.MlinkConstants.EVENT_PAGE
 import com.mimeda.mlink.common.MlinkConstants.HOME
 import com.mimeda.mlink.common.MlinkConstants.HOME_ADD_TO_CART
 import com.mimeda.mlink.common.MlinkConstants.HOME_VIEW
-import com.mimeda.mlink.common.MlinkConstants.KEYWORD
-import com.mimeda.mlink.common.MlinkConstants.LANGUAGE
-import com.mimeda.mlink.common.MlinkConstants.LINE_ITEM_ID
 import com.mimeda.mlink.common.MlinkConstants.LISTING
 import com.mimeda.mlink.common.MlinkConstants.LISTING_ADD_TO_CART
 import com.mimeda.mlink.common.MlinkConstants.LISTING_VIEW
-import com.mimeda.mlink.common.MlinkConstants.MLINK_UUID
-import com.mimeda.mlink.common.MlinkConstants.PLATFORM
-import com.mimeda.mlink.common.MlinkConstants.PRODUCTS
 import com.mimeda.mlink.common.MlinkConstants.PRODUCT_DETAILS
 import com.mimeda.mlink.common.MlinkConstants.PRODUCT_DETAILS_ADD_TO_CART
 import com.mimeda.mlink.common.MlinkConstants.PRODUCT_DETAILS_VIEW
-import com.mimeda.mlink.common.MlinkConstants.PUBLISHER
 import com.mimeda.mlink.common.MlinkConstants.PURCHASE
 import com.mimeda.mlink.common.MlinkConstants.PURCHASE_SUCCESS
 import com.mimeda.mlink.common.MlinkConstants.SEARCH
 import com.mimeda.mlink.common.MlinkConstants.SEARCH_ADD_TO_CART
 import com.mimeda.mlink.common.MlinkConstants.SEARCH_VIEW
-import com.mimeda.mlink.common.MlinkConstants.SESSION_ID
-import com.mimeda.mlink.common.MlinkConstants.SHARED_PREF_NAME
 import com.mimeda.mlink.common.MlinkConstants.SUCCESS
-import com.mimeda.mlink.common.MlinkConstants.TIMESTAMP
-import com.mimeda.mlink.common.MlinkConstants.TOTAL_ROW_COUNT
-import com.mimeda.mlink.common.MlinkConstants.TRANSACTION_ID
-import com.mimeda.mlink.common.MlinkConstants.USER_ID
-import com.mimeda.mlink.common.MlinkConstants.VERSION
 import com.mimeda.mlink.common.MlinkConstants.VIEW
-import com.mimeda.mlink.common.appendParams
-import com.mimeda.mlink.common.getSessionId
-import com.mimeda.mlink.common.prepareUuid
+import com.mimeda.mlink.common.MlinkUrlBuilder
 import com.mimeda.mlink.data.MlinkEventPayload
-import com.mimeda.mlink.data.UrlPath
-import com.mimeda.mlink.network.client.MlinkFuelClient
-import java.util.Locale
+import com.mimeda.mlink.network.MlinkClient
 
 object MlinkEvents {
 
-    private val client by lazy { MlinkFuelClient() }
-    private lateinit var sharedPref: SharedPreferences
-
-    fun init(context: Context) {
-        sharedPref = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
-    }
-
-    private fun prepareUrl(payload: MlinkEventPayload, event: String, eventPage: String): String {
-        val uuid = sharedPref.prepareUuid()
-
-        val productsString = payload.products?.joinToString(";") { "${it.barcode}:${it.quantity}:${it.price}" }
-        val sessionId = sharedPref.getSessionId(payload.userId ?: -1, uuid)
-        val language = "${Locale.getDefault().language}-${Locale.getDefault().country}"
-        val platform = "${Build.MANUFACTURER.uppercase()}-${Build.MODEL}-$ANDROID-${Build.VERSION.RELEASE}"
-
-        return buildString {
-            append(BuildConfig.EVENT_URL)
-            append(UrlPath.EVENT.value)
-            appendParams(
-                VERSION to BuildConfig.VERSION_NAME,
-                PUBLISHER to MlinkConstants.publisher,
-                APP_ID to MlinkConstants.appId,
-                TIMESTAMP to System.currentTimeMillis(),
-                DEVICE_ID to uuid,
-                LANGUAGE to language,
-                PLATFORM to platform,
-                EVENT to event,
-                EVENT_PAGE to eventPage,
-                AID to sharedPref.getString(MLINK_UUID, ""),
-                USER_ID to payload.userId.toString(),
-                SESSION_ID to sessionId,
-                PRODUCTS to productsString,
-                CATEGORY_ID to payload.categoryId,
-                KEYWORD to payload.keyword,
-                TRANSACTION_ID to payload.transactionId,
-                TOTAL_ROW_COUNT to payload.totalRowCount,
-                LINE_ITEM_ID to payload.lineItemIds,
-            )
-        }
-    }
-
     object Home {
-        suspend fun view(payload: MlinkEventPayload) {
-            client.get(prepareUrl(payload, HOME, VIEW), HOME_VIEW)
-        }
+        suspend fun view(payload: MlinkEventPayload) = apiCall(payload, HOME, VIEW, HOME_VIEW)
 
         suspend fun addToCart(payload: MlinkEventPayload) {
-            if (payload.products.isNullOrEmpty()) {
-                MlinkLogger.warning("Mlink: You Should Send Products")
-            }
-            client.get(prepareUrl(payload, HOME, ADD_TO_CART), HOME_ADD_TO_CART)
+            if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
+            apiCall(payload, HOME, ADD_TO_CART, HOME_ADD_TO_CART)
         }
     }
 
     object Listing {
         suspend fun view(payload: MlinkEventPayload) {
-            if (payload.categoryId.isNullOrEmpty()) {
-                MlinkLogger.warning("Mlink: You Should Send Category ID")
-            }
-            client.get(prepareUrl(payload, LISTING, VIEW), LISTING_VIEW)
+            if (payload.categoryId.isNullOrEmpty()) showWarning("You Should Send Category ID")
+            apiCall(payload, LISTING, VIEW, LISTING_VIEW)
         }
 
         suspend fun addToCart(payload: MlinkEventPayload) {
             when {
-                payload.products.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Products")
-                payload.categoryId.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Category ID")
+                payload.products.isNullOrEmpty() -> showWarning("You Should Send Products")
+                payload.categoryId.isNullOrEmpty() -> showWarning("You Should Send Category ID")
             }
-            client.get(prepareUrl(payload, LISTING, ADD_TO_CART), LISTING_ADD_TO_CART)
+            apiCall(payload, LISTING, ADD_TO_CART, LISTING_ADD_TO_CART)
         }
     }
 
     object Search {
         suspend fun view(payload: MlinkEventPayload) {
             when {
-                payload.keyword.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Keyword")
-                payload.totalRowCount == null -> MlinkLogger.warning("Mlink: You Should Send Total Row Count")
+                payload.keyword.isNullOrEmpty() -> showWarning("You Should Send Keyword")
+                payload.totalRowCount == null -> showWarning("You Should Send Total Row Count")
             }
-            client.get(prepareUrl(payload, SEARCH, VIEW), SEARCH_VIEW)
+            apiCall(payload, SEARCH, VIEW, SEARCH_VIEW)
         }
 
         suspend fun addToCart(payload: MlinkEventPayload) {
             when {
-                payload.products.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Products")
-                payload.keyword.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Keyword")
+                payload.products.isNullOrEmpty() -> showWarning("You Should Send Products")
+                payload.keyword.isNullOrEmpty() -> showWarning("You Should Send Keyword")
             }
-            client.get(prepareUrl(payload, SEARCH, ADD_TO_CART), SEARCH_ADD_TO_CART)
+            apiCall(payload, SEARCH, ADD_TO_CART, SEARCH_ADD_TO_CART)
         }
     }
 
     object ProductDetails {
         suspend fun view(payload: MlinkEventPayload) {
-            if (payload.products.isNullOrEmpty()) {
-                MlinkLogger.warning("Mlink: You Should Send Products")
-            }
-            client.get(prepareUrl(payload, PRODUCT_DETAILS, VIEW), PRODUCT_DETAILS_VIEW)
+            if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
+            apiCall(payload, PRODUCT_DETAILS, VIEW, PRODUCT_DETAILS_VIEW)
         }
 
         suspend fun addToCart(payload: MlinkEventPayload) {
-            if (payload.products.isNullOrEmpty()) {
-                MlinkLogger.warning("Mlink: You Should Send Products")
-            }
-            client.get(prepareUrl(payload, PRODUCT_DETAILS, ADD_TO_CART), PRODUCT_DETAILS_ADD_TO_CART)
+            if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
+            apiCall(payload, PRODUCT_DETAILS, ADD_TO_CART, PRODUCT_DETAILS_ADD_TO_CART)
         }
     }
 
     object Cart {
         suspend fun view(payload: MlinkEventPayload) {
-            if (payload.products.isNullOrEmpty()) {
-                MlinkLogger.warning("Mlink: You Should Send Products")
-            }
-            client.get(prepareUrl(payload, CART, VIEW), CART_VIEW)
+            if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
+            apiCall(payload, CART, VIEW, CART_VIEW)
         }
     }
 
     object Purchase {
         suspend fun success(payload: MlinkEventPayload) {
             when {
-                payload.transactionId == null -> MlinkLogger.warning("Mlink: You Should Send Transaction ID")
-                payload.products.isNullOrEmpty() -> MlinkLogger.warning("Mlink: You Should Send Products")
+                payload.transactionId == null -> showWarning("You Should Send Transaction ID")
+                payload.products.isNullOrEmpty() -> showWarning("You Should Send Products")
             }
-            client.get(prepareUrl(payload, PURCHASE, SUCCESS), PURCHASE_SUCCESS)
+            apiCall(payload, PURCHASE, SUCCESS, PURCHASE_SUCCESS)
         }
+    }
+
+    private fun showWarning(message: String) {
+        MlinkLogger.warning("Mlink: $message")
+    }
+
+    private suspend fun apiCall(payload: MlinkEventPayload, event: String, eventPage: String, eventType: String) {
+        MlinkClient.get(MlinkUrlBuilder.prepareEventUrl(payload, event, eventPage), eventType)
     }
 }

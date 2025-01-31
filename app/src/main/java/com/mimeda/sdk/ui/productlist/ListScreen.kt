@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
-fun ProductListScreen(
+fun ListScreen(
     uiState: UiState,
     uiEffect: Flow<UiEffect>,
     onAction: (UiAction) -> Unit,
@@ -143,8 +143,8 @@ private fun ProductItem(
 
 @Preview(showBackground = true)
 @Composable
-fun ProductListScreenPreview() {
-    ProductListScreen(uiState = UiState(
+fun ListScreenPreview() {
+    ListScreen(uiState = UiState(
         isLoading = false,
         products = MockData.products,
     ), uiEffect = emptyFlow(), onAction = {}, onNavigateToDetail = {})

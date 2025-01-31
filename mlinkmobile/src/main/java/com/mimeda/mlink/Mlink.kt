@@ -3,6 +3,7 @@ package com.mimeda.mlink
 import android.content.Context
 import androidx.annotation.Keep
 import com.mimeda.mlink.common.MlinkConstants
+import com.mimeda.mlink.local.MlinkPreferences
 
 @Keep
 object Mlink {
@@ -10,8 +11,7 @@ object Mlink {
         MlinkLogger.isEnabled = isLogEnabled
         MlinkConstants.appId = appId
         MlinkConstants.publisher = publisher
-        MlinkEvents.init(context)
-        MlinkAds.init(context)
+        MlinkPreferences.init(context)
         MlinkLogger.info("Mlink initialized successfully.")
     }
 }

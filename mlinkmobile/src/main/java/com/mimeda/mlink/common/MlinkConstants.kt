@@ -5,14 +5,6 @@ internal object MlinkConstants {
     var appId: String? = null
     var publisher: String? = null
 
-    const val SHARED_PREF_NAME = "MLinkSharedPref"
-    const val MLINK_UUID = "mLinkUUID"
-    const val MLINK_TIME = "mLinkTime"
-    const val MLINK_SESSION_ID = "mLinkSessionId"
-
-    const val DATE_FORMAT = "dd.MM.yyyy HH:mm"
-    const val THIRTY_MINUTES = 30 * 60 * 1000
-
     const val HOME = "Home"
     const val LISTING = "Listing"
     const val SEARCH = "Search"
@@ -32,32 +24,6 @@ internal object MlinkConstants {
     const val PRODUCT_DETAILS_ADD_TO_CART = "ProductDetails.AddToCart"
     const val CART_VIEW = "Cart.View"
     const val PURCHASE_SUCCESS = "Purchase.Success"
-
-    const val ANDROID = "Android"
-    const val VERSION = "v"
-    const val PUBLISHER = "&pub"
-    const val APP_ID = "&appId"
-    const val TIMESTAMP = "&t"
-    const val DEVICE_ID = "&d"
-    const val LANGUAGE = "&lng"
-    const val PLATFORM = "&p"
-    const val EVENT = "&en"
-    const val EVENT_PAGE = "&ep"
-    const val AID = "&aid"
-    const val USER_ID = "&uid"
-    const val SESSION_ID = "&s"
-    const val PRODUCTS = "&pl"
-    const val CATEGORY_ID = "&ct"
-    const val KEYWORD = "&kw"
-    const val TRANSACTION_ID = "&trans"
-    const val TOTAL_ROW_COUNT = "&trc"
-
-    const val CREATIVE_ID = "c"
-    const val LINE_ITEM_ID = "&li"
-    const val AD_UNIT = "&au"
-    const val KEYWORD_AD = "&kw"
-    const val PRODUCT_SKU = "&psku"
-    const val PAYLOAD = "&pyl"
 
     const val IMPRESSION = "Ad Impression"
     const val CLICK = "Ad Click"

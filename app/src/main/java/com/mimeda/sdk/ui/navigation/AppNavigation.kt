@@ -10,10 +10,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.mimeda.sdk.ui.productdetail.DetailScreen
 import com.mimeda.sdk.ui.productdetail.DetailViewModel
-import com.mimeda.sdk.ui.productdetail.ProductDetailScreen
-import com.mimeda.sdk.ui.productlist.ProductListScreen
-import com.mimeda.sdk.ui.productlist.ProductListViewModel
+import com.mimeda.sdk.ui.productlist.ListScreen
+import com.mimeda.sdk.ui.productlist.ListViewModel
 
 @Composable
 fun ProductAppNavigation(
@@ -26,10 +26,10 @@ fun ProductAppNavigation(
         startDestination = "list"
     ) {
         composable("list") {
-            val viewModel: ProductListViewModel = viewModel()
+            val viewModel: ListViewModel = viewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val uiEffect = viewModel.uiEffect
-            ProductListScreen(
+            ListScreen(
                 uiState = uiState,
                 uiEffect = uiEffect,
                 onAction = viewModel::onAction,
@@ -47,7 +47,7 @@ fun ProductAppNavigation(
         ) {
             val viewModel: DetailViewModel = viewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            ProductDetailScreen(
+            DetailScreen(
                 uiState = uiState,
             )
         }
