@@ -8,7 +8,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 internal class MlinkFuelClient {
-
+    /**
+     * Executes an HTTP GET request asynchronously
+     */
     suspend fun get(url: String, eventName: String) = withContext(Dispatchers.IO) {
         try {
             val request = url.httpGet()
@@ -17,7 +19,9 @@ internal class MlinkFuelClient {
             MlinkLogger.error("Mlink: Error: $e - $eventName")
         }
     }
-
+    /**
+     * Executes the network request and logs the response status
+     */
     private fun executeRequest(request: Request, eventName: String) {
         val (_, response) = request.response()
 

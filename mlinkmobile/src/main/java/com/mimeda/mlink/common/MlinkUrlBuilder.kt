@@ -9,7 +9,9 @@ import com.mimeda.mlink.local.MlinkPreferences
 import java.util.Locale
 
 internal object MlinkUrlBuilder {
-
+    /**
+     * Prepares an advertisement URL using the provided ad payload and URL path
+     */
     fun prepareAdUrl(payload: MlinkAdPayload, urlPath: UrlPath): String {
         return buildString {
             append(BuildConfig.PERFORMANCE_URL)
@@ -29,6 +31,9 @@ internal object MlinkUrlBuilder {
         }
     }
 
+    /**
+     * Prepares an event tracking URL using the provided event payload
+     */
     fun prepareEventUrl(payload: MlinkEventPayload, event: String, eventPage: String): String {
         val productsString = payload.products?.joinToString(";") { "${it.barcode}:${it.quantity}:${it.price}" }
         val lineItemIds = payload.lineItemIds?.joinToString(",")
@@ -64,6 +69,9 @@ internal object MlinkUrlBuilder {
         }
     }
 
+    /**
+     * Appends key-value parameters to the URL query string
+     */
     private fun StringBuilder.appendParams(vararg params: Pair<String, Any?>) {
         params.forEach { (key, value) ->
             value?.let { append("$key=$it") }

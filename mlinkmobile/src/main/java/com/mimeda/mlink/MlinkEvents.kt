@@ -17,24 +17,39 @@ import com.mimeda.mlink.network.MlinkClient
 object MlinkEvents {
 
     object Home {
+        /**
+         * Sends a view event for the Home page
+         */
         suspend fun view(payload: MlinkEventPayload) = apiCall(payload, HOME, VIEW)
 
+        /**
+         * Sends an add-to-cart event for the Home page
+         */
         suspend fun addToCart(payload: MlinkEventPayload) {
             if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
             apiCall(payload, HOME, ADD_TO_CART)
         }
 
+        /**
+         * Sends an add-to-favorites event for the Home page
+         */
         suspend fun addToFavorites(payload: MlinkEventPayload) {
             apiCall(payload, HOME, ADD_TO_FAVORITES)
         }
     }
 
     object Listing {
+        /**
+         * Sends a view event for the Listing page
+         */
         suspend fun view(payload: MlinkEventPayload) {
             if (payload.categoryId.isNullOrEmpty()) showWarning("You Should Send Category ID")
             apiCall(payload, LISTING, VIEW)
         }
 
+        /**
+         * Sends an add-to-cart event for the Listing page
+         */
         suspend fun addToCart(payload: MlinkEventPayload) {
             when {
                 payload.products.isNullOrEmpty() -> showWarning("You Should Send Products")
@@ -43,12 +58,18 @@ object MlinkEvents {
             apiCall(payload, LISTING, ADD_TO_CART)
         }
 
+        /**
+         * Sends an add-to-favorites event for the Listing page
+         */
         suspend fun addToFavorites(payload: MlinkEventPayload) {
             apiCall(payload, LISTING, ADD_TO_FAVORITES)
         }
     }
 
     object Search {
+        /**
+         * Sends a view event for the Search page
+         */
         suspend fun view(payload: MlinkEventPayload) {
             when {
                 payload.keyword.isNullOrEmpty() -> showWarning("You Should Send Keyword")
@@ -57,6 +78,9 @@ object MlinkEvents {
             apiCall(payload, SEARCH, VIEW)
         }
 
+        /**
+         * Sends an add-to-cart event for the Search page
+         */
         suspend fun addToCart(payload: MlinkEventPayload) {
             when {
                 payload.products.isNullOrEmpty() -> showWarning("You Should Send Products")
@@ -65,28 +89,43 @@ object MlinkEvents {
             apiCall(payload, SEARCH, ADD_TO_CART)
         }
 
+        /**
+         * Sends an add-to-favorites event for the Search page
+         */
         suspend fun addToFavorites(payload: MlinkEventPayload) {
             apiCall(payload, SEARCH, ADD_TO_FAVORITES)
         }
     }
 
     object ProductDetails {
+        /**
+         * Sends a view event for the Product Details page
+         */
         suspend fun view(payload: MlinkEventPayload) {
             if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
             apiCall(payload, PRODUCT_DETAILS, VIEW)
         }
 
+        /**
+         * Sends an add-to-cart event for the Product Details page
+         */
         suspend fun addToCart(payload: MlinkEventPayload) {
             if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
             apiCall(payload, PRODUCT_DETAILS, ADD_TO_CART)
         }
 
+        /**
+         * Sends an add-to-favorites event for the Product Details page
+         */
         suspend fun addToFavorites(payload: MlinkEventPayload) {
             apiCall(payload, PRODUCT_DETAILS, ADD_TO_FAVORITES)
         }
     }
 
     object Cart {
+        /**
+         * Sends a view event for the Cart page
+         */
         suspend fun view(payload: MlinkEventPayload) {
             if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
             apiCall(payload, CART, VIEW)
@@ -94,6 +133,9 @@ object MlinkEvents {
     }
 
     object Purchase {
+        /**
+         * Sends a success event for a purchase
+         */
         suspend fun success(payload: MlinkEventPayload) {
             when {
                 payload.transactionId == null -> showWarning("You Should Send Transaction ID")
@@ -103,10 +145,16 @@ object MlinkEvents {
         }
     }
 
+    /**
+     * Logs a warning message if required data is missing
+     */
     private fun showWarning(message: String) {
         MlinkLogger.warning("Mlink: $message")
     }
 
+    /**
+     * Executes an API call for event tracking
+     */
     private suspend fun apiCall(payload: MlinkEventPayload, event: String, eventPage: String) {
         MlinkClient.get(MlinkUrlBuilder.prepareEventUrl(payload, event, eventPage), "$event.$eventPage")
     }

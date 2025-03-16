@@ -13,6 +13,9 @@ internal object MlinkPreferences {
 
     private lateinit var sharedPref: SharedPreferences
 
+    /**
+     * Initializes EncryptedSharedPreferences with AES-256 encryption
+     */
     fun init(context: Context) {
         val masterKey = MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
 
@@ -25,6 +28,9 @@ internal object MlinkPreferences {
         )
     }
 
+    /**
+     * Retrieves or generates a unique identifier (UUID) for the device
+     */
     fun getUuid(): String {
         return if (sharedPref.getString(MLINK_UUID, "").isNullOrEmpty()) {
             UUID.randomUUID().toString().apply { sharedPref.edit().putString(MLINK_UUID, this).apply() }
@@ -33,6 +39,9 @@ internal object MlinkPreferences {
         }
     }
 
+    /**
+     * Retrieves or generates a session ID, resetting if more than 30 minutes have passed
+     */
     fun getSessionId(userId: Int?): String {
         val startTime = sharedPref.getLong(MLINK_TIME, 0L)
         val currentTime = System.currentTimeMillis()
@@ -51,6 +60,9 @@ internal object MlinkPreferences {
         }
     }
 
+    /**
+     * Generates a session ID based on user ID, UUID, and current timestamp
+     */
     private fun generateSessionId(userId: Int, uuid: String): String {
         val time = System.currentTimeMillis()
         val formattedTime = SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(Date(time))
