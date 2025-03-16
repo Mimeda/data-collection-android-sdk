@@ -1,22 +1,13 @@
 package com.mimeda.mlink
 
 import com.mimeda.mlink.common.MlinkConstants.ADD_TO_CART
+import com.mimeda.mlink.common.MlinkConstants.ADD_TO_FAVORITES
 import com.mimeda.mlink.common.MlinkConstants.CART
-import com.mimeda.mlink.common.MlinkConstants.CART_VIEW
 import com.mimeda.mlink.common.MlinkConstants.HOME
-import com.mimeda.mlink.common.MlinkConstants.HOME_ADD_TO_CART
-import com.mimeda.mlink.common.MlinkConstants.HOME_VIEW
 import com.mimeda.mlink.common.MlinkConstants.LISTING
-import com.mimeda.mlink.common.MlinkConstants.LISTING_ADD_TO_CART
-import com.mimeda.mlink.common.MlinkConstants.LISTING_VIEW
 import com.mimeda.mlink.common.MlinkConstants.PRODUCT_DETAILS
-import com.mimeda.mlink.common.MlinkConstants.PRODUCT_DETAILS_ADD_TO_CART
-import com.mimeda.mlink.common.MlinkConstants.PRODUCT_DETAILS_VIEW
 import com.mimeda.mlink.common.MlinkConstants.PURCHASE
-import com.mimeda.mlink.common.MlinkConstants.PURCHASE_SUCCESS
 import com.mimeda.mlink.common.MlinkConstants.SEARCH
-import com.mimeda.mlink.common.MlinkConstants.SEARCH_ADD_TO_CART
-import com.mimeda.mlink.common.MlinkConstants.SEARCH_VIEW
 import com.mimeda.mlink.common.MlinkConstants.SUCCESS
 import com.mimeda.mlink.common.MlinkConstants.VIEW
 import com.mimeda.mlink.common.MlinkUrlBuilder
@@ -26,18 +17,22 @@ import com.mimeda.mlink.network.MlinkClient
 object MlinkEvents {
 
     object Home {
-        suspend fun view(payload: MlinkEventPayload) = apiCall(payload, HOME, VIEW, HOME_VIEW)
+        suspend fun view(payload: MlinkEventPayload) = apiCall(payload, HOME, VIEW)
 
         suspend fun addToCart(payload: MlinkEventPayload) {
             if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
-            apiCall(payload, HOME, ADD_TO_CART, HOME_ADD_TO_CART)
+            apiCall(payload, HOME, ADD_TO_CART)
+        }
+
+        suspend fun addToFavorites(payload: MlinkEventPayload) {
+            apiCall(payload, HOME, ADD_TO_FAVORITES)
         }
     }
 
     object Listing {
         suspend fun view(payload: MlinkEventPayload) {
             if (payload.categoryId.isNullOrEmpty()) showWarning("You Should Send Category ID")
-            apiCall(payload, LISTING, VIEW, LISTING_VIEW)
+            apiCall(payload, LISTING, VIEW)
         }
 
         suspend fun addToCart(payload: MlinkEventPayload) {
@@ -45,7 +40,11 @@ object MlinkEvents {
                 payload.products.isNullOrEmpty() -> showWarning("You Should Send Products")
                 payload.categoryId.isNullOrEmpty() -> showWarning("You Should Send Category ID")
             }
-            apiCall(payload, LISTING, ADD_TO_CART, LISTING_ADD_TO_CART)
+            apiCall(payload, LISTING, ADD_TO_CART)
+        }
+
+        suspend fun addToFavorites(payload: MlinkEventPayload) {
+            apiCall(payload, LISTING, ADD_TO_FAVORITES)
         }
     }
 
@@ -55,7 +54,7 @@ object MlinkEvents {
                 payload.keyword.isNullOrEmpty() -> showWarning("You Should Send Keyword")
                 payload.totalRowCount == null -> showWarning("You Should Send Total Row Count")
             }
-            apiCall(payload, SEARCH, VIEW, SEARCH_VIEW)
+            apiCall(payload, SEARCH, VIEW)
         }
 
         suspend fun addToCart(payload: MlinkEventPayload) {
@@ -63,26 +62,34 @@ object MlinkEvents {
                 payload.products.isNullOrEmpty() -> showWarning("You Should Send Products")
                 payload.keyword.isNullOrEmpty() -> showWarning("You Should Send Keyword")
             }
-            apiCall(payload, SEARCH, ADD_TO_CART, SEARCH_ADD_TO_CART)
+            apiCall(payload, SEARCH, ADD_TO_CART)
+        }
+
+        suspend fun addToFavorites(payload: MlinkEventPayload) {
+            apiCall(payload, SEARCH, ADD_TO_FAVORITES)
         }
     }
 
     object ProductDetails {
         suspend fun view(payload: MlinkEventPayload) {
             if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
-            apiCall(payload, PRODUCT_DETAILS, VIEW, PRODUCT_DETAILS_VIEW)
+            apiCall(payload, PRODUCT_DETAILS, VIEW)
         }
 
         suspend fun addToCart(payload: MlinkEventPayload) {
             if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
-            apiCall(payload, PRODUCT_DETAILS, ADD_TO_CART, PRODUCT_DETAILS_ADD_TO_CART)
+            apiCall(payload, PRODUCT_DETAILS, ADD_TO_CART)
+        }
+
+        suspend fun addToFavorites(payload: MlinkEventPayload) {
+            apiCall(payload, PRODUCT_DETAILS, ADD_TO_FAVORITES)
         }
     }
 
     object Cart {
         suspend fun view(payload: MlinkEventPayload) {
             if (payload.products.isNullOrEmpty()) showWarning("You Should Send Products")
-            apiCall(payload, CART, VIEW, CART_VIEW)
+            apiCall(payload, CART, VIEW)
         }
     }
 
@@ -92,7 +99,7 @@ object MlinkEvents {
                 payload.transactionId == null -> showWarning("You Should Send Transaction ID")
                 payload.products.isNullOrEmpty() -> showWarning("You Should Send Products")
             }
-            apiCall(payload, PURCHASE, SUCCESS, PURCHASE_SUCCESS)
+            apiCall(payload, PURCHASE, SUCCESS)
         }
     }
 
@@ -100,7 +107,7 @@ object MlinkEvents {
         MlinkLogger.warning("Mlink: $message")
     }
 
-    private suspend fun apiCall(payload: MlinkEventPayload, event: String, eventPage: String, eventType: String) {
-        MlinkClient.get(MlinkUrlBuilder.prepareEventUrl(payload, event, eventPage), eventType)
+    private suspend fun apiCall(payload: MlinkEventPayload, event: String, eventPage: String) {
+        MlinkClient.get(MlinkUrlBuilder.prepareEventUrl(payload, event, eventPage), "$event.$eventPage")
     }
 }

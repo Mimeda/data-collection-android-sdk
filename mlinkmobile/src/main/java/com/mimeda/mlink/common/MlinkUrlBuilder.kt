@@ -24,7 +24,7 @@ internal object MlinkUrlBuilder {
                 AID to MlinkPreferences.getUuid(),
                 USER_ID to payload.userId.toString(),
                 TIMESTAMP to System.currentTimeMillis(),
-                SESSION_ID to MlinkPreferences.getSessionId(payload.userId)
+                SESSION_ID to MlinkPreferences.getSessionId(payload.userId),
             )
         }
     }
@@ -58,6 +58,8 @@ internal object MlinkUrlBuilder {
                 TRANSACTION_ID to payload.transactionId,
                 TOTAL_ROW_COUNT to payload.totalRowCount,
                 LINE_ITEM_ID to lineItemIds,
+                WEBSITE to payload.website,
+                LOYALTY_CARD to payload.loyaltyCard,
             )
         }
     }
@@ -93,4 +95,6 @@ internal object MlinkUrlBuilder {
     private const val KEYWORD_AD = "&kw"
     private const val PRODUCT_SKU = "&psku"
     private const val PAYLOAD = "&pyl"
+    private const val WEBSITE = "&ws"
+    private const val LOYALTY_CARD = "&lc"
 }
