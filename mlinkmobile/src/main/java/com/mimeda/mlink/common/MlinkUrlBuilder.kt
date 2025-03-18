@@ -63,7 +63,7 @@ internal object MlinkUrlBuilder {
                 TRANSACTION_ID to payload.transactionId,
                 TOTAL_ROW_COUNT to payload.totalRowCount,
                 LINE_ITEM_ID to lineItemIds,
-                WEBSITE to payload.website,
+                WEBSITE to MlinkConstants.website,
                 LOYALTY_CARD to payload.loyaltyCard,
             )
         }

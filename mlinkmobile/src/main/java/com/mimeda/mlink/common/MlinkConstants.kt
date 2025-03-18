@@ -4,6 +4,7 @@ internal object MlinkConstants {
 
     var appId: String? = null
     var publisher: String? = null
+    var website: String? = null
 
     const val HOME = "Home"
     const val LISTING = "Listing"

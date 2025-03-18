@@ -3,7 +3,7 @@ package com.mimeda.mlink.data
 /**
  * MlinkEventPayload is a data class representing the payload of an Mlink event.
  * It contains various properties such as user ID, category ID, keyword, transaction ID,
- * total row count, products, line item IDs, website, and loyalty card.
+ * total row count, products, line item IDs, and loyalty card.
  */
 data class MlinkEventPayload(
     val userId: Int? = null,
@@ -13,6 +13,5 @@ data class MlinkEventPayload(
     val totalRowCount: Int? = null,
     val products: List<MlinkEventProduct>? = null,
     val lineItemIds: List<Int>? = null,
-    val website: String? = null,
     val loyaltyCard: String? = null,
 )

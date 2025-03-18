@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.UUID
+import androidx.core.content.edit
 
 internal object MlinkPreferences {
 
@@ -33,7 +34,9 @@ internal object MlinkPreferences {
      */
     fun getUuid(): String {
         return if (sharedPref.getString(MLINK_UUID, "").isNullOrEmpty()) {
-            UUID.randomUUID().toString().apply { sharedPref.edit().putString(MLINK_UUID, this).apply() }
+            UUID.randomUUID().toString().also { uuid ->
+                sharedPref.edit { putString(MLINK_UUID, uuid) }
+            }
         } else {
             sharedPref.getString(MLINK_UUID, "").orEmpty()
         }
@@ -51,7 +54,7 @@ internal object MlinkPreferences {
             startTime == 0L -> generateSessionId(userId ?: -1, getUuid())
             isThirtyMinutesPassed -> {
                 val newUuid = UUID.randomUUID().toString().also {
-                    sharedPref.edit().putString(MLINK_UUID, it).apply()
+                    sharedPref.edit { putString(MLINK_UUID, it) }
                 }
                 generateSessionId(userId ?: -1, newUuid)
             }
@@ -66,10 +69,10 @@ internal object MlinkPreferences {
     private fun generateSessionId(userId: Int, uuid: String): String {
         val time = System.currentTimeMillis()
         val formattedTime = SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(Date(time))
-        sharedPref.edit().apply {
+        sharedPref.edit {
             putLong(MLINK_TIME, time)
             putString(MLINK_SESSION_ID, "${userId}-$uuid/$formattedTime")
-        }.apply()
+        }
         return "${userId}-$uuid/$formattedTime"
     }
 
