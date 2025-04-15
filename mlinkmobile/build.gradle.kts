@@ -24,13 +24,13 @@ android {
             isMinifyEnabled = false
             buildConfigField("String", "EVENT_URL", "\"https://event.mlink.com.tr\"")
             buildConfigField("String", "PERFORMANCE_URL", "\"https://performance.mlink.com.tr\"")
-            buildConfigField("String", "VERSION_NAME", "\"1.1.0\"")
+            buildConfigField("String", "VERSION_NAME", "\"1.1.1\"")
         }
         release {
             isMinifyEnabled = false
             buildConfigField("String", "EVENT_URL", "\"https://event.mlink.com.tr\"")
             buildConfigField("String", "PERFORMANCE_URL", "\"https://performance.mlink.com.tr\"")
-            buildConfigField("String", "VERSION_NAME", "\"1.1.0\"")
+            buildConfigField("String", "VERSION_NAME", "\"1.1.1\"")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -69,7 +69,7 @@ afterEvaluate {
 
                     groupId = "com.mimeda.mlink"
                     artifactId = "android"
-                    version = "1.1.0"
+                    version = "1.1.1"
                 }
             }
         }
