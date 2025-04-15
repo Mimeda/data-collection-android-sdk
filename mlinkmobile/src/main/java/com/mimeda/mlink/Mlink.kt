@@ -12,18 +12,14 @@ object Mlink {
      */
     fun initialize(
         context: Context,
-        appId: String,
-        publisher: String,
-        website: String,
+        app: String,
         isLogEnabled: Boolean = false,
     ) {
         // Enable or disable logging
         MlinkLogger.isEnabled = isLogEnabled
 
-        // Set application ID and publisher details
-        MlinkConstants.appId = appId
-        MlinkConstants.publisher = publisher
-        MlinkConstants.website = website
+        // Set application and publisher details
+        MlinkConstants.app = app
 
         // Initialize preferences storage
         MlinkPreferences.init(context)

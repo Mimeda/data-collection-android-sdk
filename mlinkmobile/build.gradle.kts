@@ -22,14 +22,14 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            buildConfigField("String", "EVENT_URL", "\"https://bidding-eventcollector-stage.azurewebsites.net\"")
-            buildConfigField("String", "PERFORMANCE_URL", "\"https://bidding-prfmnccollector-stage.azurewebsites.net\"")
+            buildConfigField("String", "EVENT_URL", "\"https://event.mlink.com.tr\"")
+            buildConfigField("String", "PERFORMANCE_URL", "\"https://performance.mlink.com.tr\"")
             buildConfigField("String", "VERSION_NAME", "\"1.0.9\"")
         }
         release {
             isMinifyEnabled = false
-            buildConfigField("String", "EVENT_URL", "\"https://bidding-eventcollector-stage.azurewebsites.net\"")
-            buildConfigField("String", "PERFORMANCE_URL", "\"https://bidding-prfmnccollector-stage.azurewebsites.net\"")
+            buildConfigField("String", "EVENT_URL", "\"https://event.mlink.com.tr\"")
+            buildConfigField("String", "PERFORMANCE_URL", "\"https://performance.mlink.com.tr\"")
             buildConfigField("String", "VERSION_NAME", "\"1.0.9\"")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }

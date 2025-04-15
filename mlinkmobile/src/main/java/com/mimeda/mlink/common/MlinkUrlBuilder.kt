@@ -1,6 +1,5 @@
 package com.mimeda.mlink.common
 
-import android.os.Build
 import com.mimeda.mlink.BuildConfig
 import com.mimeda.mlink.data.MlinkAdPayload
 import com.mimeda.mlink.data.MlinkEventPayload
@@ -20,8 +19,10 @@ internal object MlinkUrlBuilder {
                 CREATIVE_ID to payload.creativeId,
                 LINE_ITEM_ID to payload.lineItemId,
                 AD_UNIT to payload.adUnit,
+                APP to MlinkConstants.app,
                 KEYWORD_AD to payload.keyword,
                 PRODUCT_SKU to payload.productSku,
+                OS to ANDROID,
                 PAYLOAD to payload.payload,
                 AID to MlinkPreferences.getUuid(),
                 USER_ID to payload.userId.toString(),
@@ -39,19 +40,17 @@ internal object MlinkUrlBuilder {
         val lineItemIds = payload.lineItemIds?.joinToString(",")
         val sessionId = MlinkPreferences.getSessionId(payload.userId)
         val language = "${Locale.getDefault().language}-${Locale.getDefault().country}"
-        val platform = "${Build.MANUFACTURER.uppercase()}-${Build.MODEL}-$ANDROID-${Build.VERSION.RELEASE}"
 
         return buildString {
             append(BuildConfig.EVENT_URL)
             append(UrlPath.EVENT.value)
             appendParams(
                 VERSION to BuildConfig.VERSION_NAME,
-                PUBLISHER to MlinkConstants.publisher,
-                APP_ID to MlinkConstants.appId,
+                APP to MlinkConstants.app,
                 TIMESTAMP to System.currentTimeMillis(),
                 DEVICE_ID to MlinkPreferences.getUuid(),
                 LANGUAGE to language,
-                PLATFORM to platform,
+                OS to ANDROID,
                 EVENT to event,
                 EVENT_PAGE to eventPage,
                 AID to MlinkPreferences.getUuid(),
@@ -63,7 +62,6 @@ internal object MlinkUrlBuilder {
                 TRANSACTION_ID to payload.transactionId,
                 TOTAL_ROW_COUNT to payload.totalRowCount,
                 LINE_ITEM_ID to lineItemIds,
-                WEBSITE to MlinkConstants.website,
                 LOYALTY_CARD to payload.loyaltyCard,
             )
         }
@@ -80,12 +78,11 @@ internal object MlinkUrlBuilder {
 
     private const val ANDROID = "Android"
     private const val VERSION = "v"
-    private const val PUBLISHER = "&pub"
-    private const val APP_ID = "&appId"
+    private const val APP = "&app"
     private const val TIMESTAMP = "&t"
     private const val DEVICE_ID = "&d"
     private const val LANGUAGE = "&lng"
-    private const val PLATFORM = "&p"
+    private const val OS = "&os"
     private const val EVENT = "&en"
     private const val EVENT_PAGE = "&ep"
     private const val AID = "&aid"
@@ -103,6 +100,5 @@ internal object MlinkUrlBuilder {
     private const val KEYWORD_AD = "&kw"
     private const val PRODUCT_SKU = "&psku"
     private const val PAYLOAD = "&pyl"
-    private const val WEBSITE = "&ws"
     private const val LOYALTY_CARD = "&lc"
 }
