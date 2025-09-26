@@ -54,7 +54,7 @@ class ListViewModel : ViewModel() {
             categoryId = "1",
             lineItemIds = listOf(1, 2, 3),
         )
-        Log.d("MLINK_PAYLOAD", "➡️ Listing.view payload=" + payload.toString())
+        Log.d("MLINK_PAYLOAD", "*NEW* Listing.view payload=" + payload.toString())
         MlinkEvents.Listing.view(payload)
     }
 
