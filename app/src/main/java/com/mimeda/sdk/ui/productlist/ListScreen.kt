@@ -39,6 +39,8 @@ import com.mimeda.sdk.ui.productlist.ListContract.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
+import android.util.Log
+
 @Composable
 fun ListScreen(
     uiState: UiState,

@@ -14,6 +14,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+import android.util.Log
+
+
 class DetailViewModel(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -32,11 +35,13 @@ class DetailViewModel(
         // Your service call here
         val product = MockData.products.find { it.id == productId }
         _uiState.update { it.copy(isLoading = false, product = product) }
-        MlinkEvents.ProductDetails.view(
-            MlinkEventPayload(
-                userId = 123,
-            )
+
+
+        val payload = MlinkEventPayload(
+            userId = 123,
         )
+        Log.d("MLINK_PAYLOAD", "*NEW* ProductDetails.view payload=" + payload.toString())
+        MlinkEvents.ProductDetails.view(payload)
     }
 }
 

@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+import android.util.Log
+
 class ListViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -52,6 +54,7 @@ class ListViewModel : ViewModel() {
             categoryId = "1",
             lineItemIds = listOf(1, 2, 3),
         )
+        Log.d("MLINK_PAYLOAD", "➡️ Listing.view payload=" + payload.toString())
         MlinkEvents.Listing.view(payload)
     }
 
@@ -65,6 +68,8 @@ class ListViewModel : ViewModel() {
             keyword = "keyword",
             payload = "encrypted-data",
         )
+
+        Log.d("MLINK_PAYLOAD", "*NEW* Ad.impression payload=" + payload.toString())
         MlinkAds.impression(payload)
     }
 
@@ -78,6 +83,7 @@ class ListViewModel : ViewModel() {
             keyword = "keyword",
             payload = "encrypted-data",
         )
+        Log.d("MLINK_PAYLOAD", "*NEW* Ad.click payload=" + payload.toString())
         MlinkAds.click(payload)
     }
 }

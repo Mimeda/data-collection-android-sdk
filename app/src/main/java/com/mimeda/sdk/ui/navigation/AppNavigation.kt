@@ -34,13 +34,13 @@ fun ProductAppNavigation(
                 uiEffect = uiEffect,
                 onAction = viewModel::onAction,
                 onNavigateToDetail = { productId ->
-                    navHostController.navigate("detail?productId=$productId")
+                    navHostController.navigate("product_detail/$productId")
                 }
             )
         }
 
         composable(
-            route = "product_detail?productId={productId}",
+            route = "product_detail/{productId}",
             arguments = listOf(
                 navArgument("productId") { type = NavType.IntType }
             )
